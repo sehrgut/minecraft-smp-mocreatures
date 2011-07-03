@@ -1,0 +1,2 @@
+Mettre dans chaque arrange une initialisation intelligente
+- initialisation de la liste des classes de déobfuscation à partir du contenu du repertoire debug
