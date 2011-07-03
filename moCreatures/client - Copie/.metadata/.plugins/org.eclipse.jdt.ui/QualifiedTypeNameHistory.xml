@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="net.minecraft.src.RenderLiving"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Block"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.BlockProxy"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityMob"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityWaterMob"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityWaterMobProxy"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityItem"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityItemProxy"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityLiving"/>
+<fullyQualifiedTypeName name="moCreatures.client.EntityCustomWM"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityPlayer"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityPlayerProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityLivingProxy"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityAnimal"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityAnimalProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityMobProxy"/>
+<fullyQualifiedTypeName name="net.minecraft.src.CraftingManager"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Item"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.ItemProxy"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Entity"/>
+<fullyQualifiedTypeName name="net.minecraft.src.ModLoader"/>
+<fullyQualifiedTypeName name="net.minecraft.src.ModAction"/>
+</qualifiedTypeNameHistroy>

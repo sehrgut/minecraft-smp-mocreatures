@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Vendor: Finnithnel Heiriol
+Implementation-Title: Minecraft Mo'Creatures SMP Client
+Implementation-Version: v1.1.0
+Specification-Vendor: Finnithnel Heiriol
+Name: /
+Sealed: true
+Created-By: 1.6.0_24 (Sun Microsystems Inc.)
+Specification-Title: Minecraft Mo'Creatures SMP Client
+Specification-Version: v1.1.0
+

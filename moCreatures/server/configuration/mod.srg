@@ -1,0 +1,23 @@
+CL: _aa_ moCreatures/proxies/BlockProxy
+CL: _ab_ moCreatures/proxies/EntityAnimalProxy
+CL: _ac_ moCreatures/proxies/EntityItemProxy
+CL: _ad_ moCreatures/proxies/EntityLivingProxy
+CL: _ae_ moCreatures/proxies/EntityMobProxy
+CL: _af_ moCreatures/proxies/EntityPlayerProxy
+CL: _ag_ moCreatures/proxies/EntityProxy
+CL: _ah_ moCreatures/proxies/EntityWaterMobProxy
+CL: _ai_ moCreatures/proxies/ItemProxy
+CL: _ba_ moCreatures/utils/ManifestManager
+FD: _ba_/_aa moCreatures/utils/ManifestManager/_values
+MD: _aa_/aa_ (I)F moCreatures/proxies/BlockProxy/getBlockHardness (I)F
+MD: _ab_/aa_ ()Ljava/lang/String; moCreatures/proxies/EntityAnimalProxy/getTexture ()Ljava/lang/String;
+MD: _ac_/aa_ ()Z moCreatures/proxies/EntityItemProxy/inWater ()Z
+MD: _ad_/aa_ ()Z moCreatures/proxies/EntityLivingProxy/inWater ()Z
+MD: _ae_/aa_ (Lrj;)V moCreatures/proxies/EntityMobProxy/setPlayerToAttack (Lnet/minecraft/src/Entity;)V
+MD: _ae_/aa_ (Ljava/lang/String;)V moCreatures/proxies/EntityMobProxy/setTexture (Ljava/lang/String;)V
+MD: _af_/aa_ ()Z moCreatures/proxies/EntityPlayerProxy/inWater ()Z
+MD: _af_/ab_ ()Z moCreatures/proxies/EntityPlayerProxy/isJumping ()Z
+MD: _ag_/aa_ ()Z moCreatures/proxies/EntityProxy/inWater ()Z
+MD: _ah_/aa_ ()Z moCreatures/proxies/EntityWaterMobProxy/playerToAttackInWater ()Z
+MD: _ba_/aa_ (Ljava/io/File;)Ljava/util/Map; moCreatures/utils/ManifestManager/getManifestValues (Ljava/io/File;)Ljava/util/Map;
+MD: _ba_/aa_ (Ljava/lang/String;)Ljava/lang/String; moCreatures/utils/ManifestManager/Value (Ljava/lang/String;)Ljava/lang/String;

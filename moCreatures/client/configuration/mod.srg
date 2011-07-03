@@ -1,0 +1,15 @@
+CL: _aa_ moCreatures/helpers/BlockHelper
+CL: _ab_ moCreatures/helpers/EntityCreatureHelper
+CL: _ac_ moCreatures/helpers/EntityHelper
+CL: _ad_ moCreatures/helpers/EntityLivingHelper
+FD: _aa_/_aa moCreatures/helpers/BlockHelper/_field_blockHardness
+FD: _ab_/_aa moCreatures/helpers/EntityCreatureHelper/_field_playerToAttack
+FD: _ac_/_aa moCreatures/helpers/EntityHelper/_field_inWater
+FD: _ad_/_aa moCreatures/helpers/EntityLivingHelper/_field_texture
+FD: _ad_/_aa moCreatures/helpers/EntityLivingHelper/_field_isJumping
+MD: _aa_/aa_ (Lun;)F moCreatures/helpers/BlockHelper/getBlockHardness (Lnet/minecraft/src/Block;)F
+MD: _ab_/aa_ (Lif;Lsi;)V moCreatures/helpers/EntityCreatureHelper/setPlayerToAttack (Lnet/minecraft/src/EntityCreature;Lnet/minecraft/src/Entity;)V
+MD: _ac_/aa_ (Lsi;)Z moCreatures/helpers/EntityHelper/getInWater (Lnet/minecraft/src/Entity;)Z
+MD: _ad_/aa_ (Llo;)Ljava/lang/String; moCreatures/helpers/EntityLivingHelper/getTexture (Lnet/minecraft/src/EntityLiving;)Ljava/lang/String;
+MD: _ad_/ab_ (Llo;)Z moCreatures/helpers/EntityLivingHelper/getIsJumping (Lnet/minecraft/src/EntityLiving;)Z
+MD: _ad_/aa_ (Llo;Ljava/lang/String;)V moCreatures/helpers/EntityLivingHelper/setTexture (Lnet/minecraft/src/EntityLiving;Ljava/lang/String;)V

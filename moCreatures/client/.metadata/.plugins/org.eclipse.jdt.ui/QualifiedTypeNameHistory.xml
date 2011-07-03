@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="net.minecraft.src.RenderLiving"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityItem"/>
+<fullyQualifiedTypeName name="moCreatures.client.EntityCustomWM"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityPlayer"/>
+<fullyQualifiedTypeName name="net.minecraft.src.CraftingManager"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Item"/>
+<fullyQualifiedTypeName name="net.minecraft.src.ModLoader"/>
+<fullyQualifiedTypeName name="net.minecraft.src.ModAction"/>
+<fullyQualifiedTypeName name="modManager.loader.BaseMod"/>
+<fullyQualifiedTypeName name="modManager.tools._mmc_cca_"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.ItemProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityWaterMobProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityItemProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityPlayerProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.BlockProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityLivingProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityMobProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityAnimalProxy"/>
+<fullyQualifiedTypeName name="modManager.ModManager"/>
+<fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
+<fullyQualifiedTypeName name="modManager.loader.LogFileManager"/>
+<fullyQualifiedTypeName name="modManager.loader.ModLoader"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Entity"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Field"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityWaterMob"/>
+<fullyQualifiedTypeName name="moCreatures.helpers.EntityHelper"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityMob"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityCreature"/>
+<fullyQualifiedTypeName name="moCreatures.helpers.EntityCreatureHelper"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityLiving"/>
+<fullyQualifiedTypeName name="net.minecraft.src.EntityAnimal"/>
+<fullyQualifiedTypeName name="moCreatures.helpers.EntityLivingHelper"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Block"/>
+</qualifiedTypeNameHistroy>

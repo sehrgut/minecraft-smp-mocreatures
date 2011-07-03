@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="net.minecraft.server.MinecraftServer"/>
+<fullyQualifiedTypeName name="modManager.loader.BaseMod"/>
+<fullyQualifiedTypeName name="modManager.tools.ManifestManager"/>
+<fullyQualifiedTypeName name="modManager.loader.ModLoader"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityMobProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityWaterMobProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityItemProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityPlayerProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.BlockProxy"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.ItemProxy"/>
+<fullyQualifiedTypeName name="modManager.tools.ExtendedPropertyManager"/>
+<fullyQualifiedTypeName name="moCreatures.proxies.EntityLivingProxy"/>
+</qualifiedTypeNameHistroy>

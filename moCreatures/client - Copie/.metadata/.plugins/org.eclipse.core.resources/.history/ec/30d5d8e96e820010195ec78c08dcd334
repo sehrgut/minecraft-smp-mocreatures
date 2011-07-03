@@ -1,0 +1,81 @@
+package net.minecraft.src;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+
+final class ManifestManager
+{
+	private Map<String, String> _values;
+
+	private ManifestManager()
+	{
+		_values = null;
+	}
+
+	ManifestManager(File file) throws Exception
+	{
+		this();
+		_values = getManifestValues(file);
+	}
+
+	String Value(String key)
+	{
+		return _values.containsKey(key) ? _values.get(key) : null;
+	}
+
+	private Map<String, String> getManifestValues(File file) throws Exception
+	{
+		if(file.isFile())
+		{
+			Map<String, String> result = null;
+			ZipFile zipfile = new ZipFile(file);
+			try 
+			{
+				Enumeration<? extends ZipEntry> entries = zipfile.entries();
+				while(entries.hasMoreElements())
+				{
+					ZipEntry entry = entries.nextElement();
+					if (entry.getName().matches("META-INF/MANIFEST.MF"))
+					{
+						result = new HashMap<String, String>();
+						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(zipfile.getInputStream(entry)));
+						try
+						{
+							String line;
+							while((line = bufferedReader.readLine()) != null) 
+							{
+								String values[] = line.split(":");
+								if (values.length > 1)
+									result.put(values[0], values[1]);
+							}
+						}
+						finally
+						{
+							bufferedReader.close();
+						}
+					}
+				}
+			}
+			finally
+			{
+				zipfile.close();
+			}
+			if (result == null || result.size() == 0)
+				throw new Exception();
+			return result;
+		}
+		else if(file.isDirectory())
+		{
+			return getManifestValues(new File("D:\\Minecraft\\Workspaces\\packages\\mod_smpMoCreaturesClient_v1.1.0.jar"));
+		}
+		throw new Exception();
+	}
+}

@@ -1,0 +1,6 @@
+"getBlockHardness","getBlockHardness","aa_","(Lnet/minecraft/src/Block;)F","(Lun;)F","BlockHelper","_aa_","moCreatures/helpers","0"
+"setPlayerToAttack","setPlayerToAttack","aa_","(Lnet/minecraft/src/EntityCreature;Lnet/minecraft/src/Entity;)V","(Lif;Lsi;)V","EntityCreatureHelper","_ab_","moCreatures/helpers","0"
+"getInWater","getInWater","aa_","(Lnet/minecraft/src/Entity;)Z","(Lsi;)Z","EntityHelper","_ac_","moCreatures/helpers","0"
+"getTexture","getTexture","aa_","(Lnet/minecraft/src/EntityLiving;)Ljava/lang/String;","(Llo;)Ljava/lang/String;","EntityLivingHelper","_ad_","moCreatures/helpers","0"
+"getIsJumping","getIsJumping","ab_","(Lnet/minecraft/src/EntityLiving;)Z","(Llo;)Z","EntityLivingHelper","_ad_","moCreatures/helpers","0"
+"setTexture","setTexture","aa_","(Lnet/minecraft/src/EntityLiving;Ljava/lang/String;)V","(Llo;Ljava/lang/String;)V","EntityLivingHelper","_ad_","moCreatures/helpers","0"

@@ -1,0 +1,162 @@
+package net.minecraft.src;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.Destroyer;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
+import net.minecraft.src.mod_MoCreatures;
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode 
+
+public class EntityOgre extends EntityMob
+{
+	public static int counterEntity;
+	public int frequencyA;
+	public float destroyForce;
+	public boolean ogreHasEnemy;
+	public boolean ogreAttack;
+	public boolean fireOgre;
+	public boolean ogreBoolean;
+	protected double attackRange;
+
+	public EntityOgre(World world)
+	{
+		super(world);
+		attackStrength = 3;
+		attackRange = 16.0D;
+		ogreBoolean = false;
+		texture = "/mob/ogre.png";
+		setSize(1.5F, 4.0F);
+		health = 35;
+		fireOgre = false;
+		ogreAttack = false;
+		ogreHasEnemy = false;
+		destroyForce = 2.5F;
+		isImmuneToFire = false;
+		frequencyA = 30;
+	}
+
+	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
+	{
+		super.writeEntityToNBT(nbttagcompound);
+		nbttagcompound.setBoolean("OgreBoolean", ogreBoolean);
+		nbttagcompound.setBoolean("OgreAttack", ogreAttack);
+		nbttagcompound.setInteger("CounterEntity", counterEntity);
+	}
+
+	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
+	{
+		super.readEntityFromNBT(nbttagcompound);
+		ogreBoolean = nbttagcompound.getBoolean("OgreBoolean");
+		ogreAttack = nbttagcompound.getBoolean("OgreAttack");
+		counterEntity = nbttagcompound.getInteger("CounterEntity");
+	}
+
+	protected String getLivingSound()
+	{
+		return "ogre";
+	}
+
+	protected String getHurtSound()
+	{
+		return "ogrehurt";
+	}
+
+	protected String getDeathSound()
+	{
+		return "ogredying";
+	}
+
+	protected int getDropItemId()
+	{
+		return Block.obsidian.blockID;
+	}
+
+	protected Entity findPlayerToAttack()
+	{
+		float f = getEntityBrightness(1.0F);
+		if(f < 0.5F)
+		{
+			EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, attackRange);
+			if(entityplayer != null && worldObj.difficultySetting > 0)
+			{
+				ogreHasEnemy = true;
+				return entityplayer;
+			}
+		}
+		ogreHasEnemy = false;
+		return null;
+	}
+
+	public boolean attackEntityFrom(Entity entity, int i)
+	{
+		if(super.attackEntityFrom(entity, i))
+		{
+			if(riddenByEntity == entity || ridingEntity == entity)
+				return true;
+			if(entity != this && worldObj.difficultySetting > 0)
+			{
+				playerToAttack = entity;
+				ogreHasEnemy = true;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public void onLivingUpdate()
+	{
+		health = 0;
+		setEntityDead();
+		findPlayerToAttack();
+		if(ogreHasEnemy && rand.nextInt(frequencyA) == 0)
+		{
+			ogreAttack = true;
+			attackTime = 15;
+		}
+		super.onLivingUpdate();
+	}
+
+	protected void attackEntity(Entity entity, float f)
+	{
+		if(f < 2.5D && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY && worldObj.difficultySetting > 0)
+			entity.attackEntityFrom(this, attackStrength);
+	}
+
+	public void destroyingOgre()
+	{
+		Destroyer.destroyBlast(worldObj, this, posX, posY + 1.0D, posZ, destroyForce, fireOgre);
+	}
+
+	public void setEntityDead()
+	{
+		counterEntity--;
+		super.setEntityDead();
+	}
+
+	public boolean getCanSpawnHere()
+	{
+		if(worldObj.difficultySetting >= mod_MoCreatures.ogresSpawnDifficulty && super.getCanSpawnHere())
+		{
+			if(counterEntity >= mod_MoCreatures.maxOgres)
+				return false;
+			counterEntity++;
+			return true;
+		} 
+		return false;
+	}
+
+	public boolean getCanSpawnHere2()
+	{
+		return super.getCanSpawnHere();
+	}
+
+	public int getMaxSpawnedInChunk()
+	{
+		return 3;
+	}
+}

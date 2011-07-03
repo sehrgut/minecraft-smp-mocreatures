@@ -1,0 +1,625 @@
+package moCreatures;
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode 
+
+import java.io.File;
+import java.util.Map;
+
+import moCreatures.entities.EntityBear;
+import moCreatures.entities.EntityBird;
+import moCreatures.entities.EntityBoar;
+import moCreatures.entities.EntityBunny;
+import moCreatures.entities.EntityCaveOgre;
+import moCreatures.entities.EntityDolphin;
+import moCreatures.entities.EntityDuck;
+import moCreatures.entities.EntityFireOgre;
+import moCreatures.entities.EntityFlameWraith;
+import moCreatures.entities.EntityFox;
+import moCreatures.entities.EntityHorse;
+import moCreatures.entities.EntityLionK;
+import moCreatures.entities.EntityOgre;
+import moCreatures.entities.EntityPolarBear;
+import moCreatures.entities.EntityShark;
+import moCreatures.entities.EntitySharkEgg;
+import moCreatures.entities.EntityWerewolf;
+import moCreatures.entities.EntityWildWolf;
+import moCreatures.entities.EntityWraith;
+import moCreatures.items.HayStack;
+import moCreatures.items.HorseSaddle;
+import moCreatures.items.ItemSharkEgg;
+import moCreatures.items.SugarLump;
+import moCreatures.models.ModelBear1;
+import moCreatures.models.ModelBear2;
+import moCreatures.models.ModelBird;
+import moCreatures.models.ModelBunny;
+import moCreatures.models.ModelDolphin;
+import moCreatures.models.ModelFox;
+import moCreatures.models.ModelHorse1;
+import moCreatures.models.ModelHorse2;
+import moCreatures.models.ModelLionK1;
+import moCreatures.models.ModelLionK2;
+import moCreatures.models.ModelOgre1;
+import moCreatures.models.ModelOgre2;
+import moCreatures.models.ModelShark;
+import moCreatures.models.ModelSharkEgg;
+import moCreatures.models.ModelWereHuman;
+import moCreatures.models.ModelWerewolf;
+import moCreatures.models.ModelWildWolf1;
+import moCreatures.models.ModelWildWolf2;
+import moCreatures.models.ModelWraith;
+import moCreatures.proxies.ItemProxy;
+import moCreatures.renders.RenderBear;
+import moCreatures.renders.RenderBird;
+import moCreatures.renders.RenderBunny;
+import moCreatures.renders.RenderCaveOgre;
+import moCreatures.renders.RenderDolphin;
+import moCreatures.renders.RenderFireOgre;
+import moCreatures.renders.RenderFox;
+import moCreatures.renders.RenderHorse;
+import moCreatures.renders.RenderLionK;
+import moCreatures.renders.RenderOgre;
+import moCreatures.renders.RenderPolarBear;
+import moCreatures.renders.RenderShark;
+import moCreatures.renders.RenderSharkEgg;
+import moCreatures.renders.RenderWerewolf;
+import moCreatures.renders.RenderWildWolf;
+import net.minecraft.src.BaseMod;
+import net.minecraft.src.BiomeGenBase;
+import net.minecraft.src.BiomeGenHell;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntitySquid;
+import net.minecraft.src.EnumCreatureType;
+import net.minecraft.src.GuiModScreen;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.ModAction;
+import net.minecraft.src.ModLoader;
+import net.minecraft.src.ModSettingScreen;
+import net.minecraft.src.ModSettings;
+import net.minecraft.src.ModelChicken;
+import net.minecraft.src.ModelPig;
+import net.minecraft.src.Render;
+import net.minecraft.src.RenderBiped;
+import net.minecraft.src.RenderChicken;
+import net.minecraft.src.RenderPig;
+import net.minecraft.src.SettingBoolean;
+import net.minecraft.src.SettingFloat;
+import net.minecraft.src.SettingInt;
+import net.minecraft.src.SettingMulti;
+import net.minecraft.src.WidgetBoolean;
+import net.minecraft.src.WidgetClassicTwocolumn;
+import net.minecraft.src.WidgetFloat;
+import net.minecraft.src.WidgetInt;
+import net.minecraft.src.WidgetMulti;
+import net.minecraft.src.WidgetSimplewindow;
+import de.matthiasmann.twl.Button;
+import de.matthiasmann.twl.Widget;
+import de.matthiasmann.twl.model.SimpleButtonModel;
+
+public class mod_MoCreatures extends BaseMod
+{
+	public static String modName;
+	public static Item horsesaddle = (new HorseSaddle(3772)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/horsesaddle.png")).setItemName("HorseSaddle");
+	public static Item haystack = (new HayStack(3775)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/haystack.png")).setItemName("HayStack");
+	public static Item sugarlump = (new SugarLump(3776)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/sugarlump.png")).setItemName("SugarLump");
+	public static Item sharkteeth = (new ItemProxy(3774)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/sharkteeth.png")).setItemName("sharkteeth");
+	public static Item sharkegg = (new ItemSharkEgg(3773)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/sharkegg.png")).setItemName("sharkegg");
+	public ModSettings MoCSettings;
+	public ModSettingScreen MoCScreen;
+	public static SettingInt maxMobsS;
+	public static WidgetInt maxMobsW;
+	public static SettingInt maxAnimalsS;
+	public static WidgetInt maxAnimalsW;
+	public static SettingInt maxWaterMobsS;
+	public static WidgetInt maxWaterMobsW;
+	public static SettingBoolean spawnlion;
+	public static SettingBoolean spawnbear;
+	public static SettingBoolean spawnpbear;
+	public static SettingBoolean spawnduck;
+	public static SettingBoolean spawnboar;
+	public static SettingBoolean spawnbunny;
+	public static SettingBoolean spawnwraith;
+	public static SettingBoolean spawnfwraith;
+	public static SettingBoolean spawnogre;
+	public static SettingBoolean spawnfogre;
+	public static SettingBoolean spawncogre;
+	public static SettingBoolean spawnhorse;
+	public static SettingBoolean spawnbird;
+	public static SettingBoolean spawnwerewolf;
+	public static SettingBoolean spawnfox;
+	public static SettingBoolean spawnshark;
+	public static SettingBoolean spawnsquid;
+	public static SettingBoolean spawndolphin;
+	public static SettingBoolean spawnwildwolf;
+	public static WidgetBoolean spawnlionW;
+	public static WidgetBoolean spawnbearW;
+	public static WidgetBoolean spawnpbearW;
+	public static WidgetBoolean spawnduckW;
+	public static WidgetBoolean spawnboarW;
+	public static WidgetBoolean spawnbunnyW;
+	public static WidgetBoolean spawnwraithW;
+	public static WidgetBoolean spawnfwraithW;
+	public static WidgetBoolean spawnogreW;
+	public static WidgetBoolean spawnfogreW;
+	public static WidgetBoolean spawncogreW;
+	public static WidgetBoolean spawnhorseW;
+	public static WidgetBoolean spawnbirdW;
+	public static WidgetBoolean spawnwerewolfW;
+	public static WidgetBoolean spawnwildwolfW;
+	public static WidgetBoolean spawnfoxW;
+	public static WidgetBoolean spawnsharkW;
+	public static WidgetBoolean spawnsquidW;
+	public static WidgetBoolean spawndolphinW;
+	public static SettingBoolean attackdolphins;
+	public static WidgetBoolean attackdolphinsW;
+	public static SettingBoolean attackhorses;
+	public static WidgetBoolean attackhorsesW;
+	public static SettingBoolean destroyitems;
+	public static WidgetBoolean destroyitemsW;
+	public static SettingInt maxLionsS;
+	public static WidgetInt maxLionsW;
+	public static SettingInt maxBearsS;
+	public static WidgetInt maxBearsW;
+	public static SettingInt maxPBearS;
+	public static WidgetInt maxPBearsW;
+	public static SettingInt maxBoarsS;
+	public static WidgetInt maxBoarsW;
+	public static SettingInt maxFoxesS;
+	public static WidgetInt maxFoxesW;
+	public static SettingInt pegasusChanceS;
+	public static WidgetInt pegasusChanceW;
+	public static SettingBoolean easybreeding;
+	public static WidgetBoolean easybreedingW;
+	public static SettingFloat ogreStrength;
+	public static SettingFloat fogreStrength;
+	public static SettingFloat cogreStrength;
+	public static WidgetFloat ogreStrengthW;
+	public static WidgetFloat fogreStrengthW;
+	public static WidgetFloat cogreStrengthW;
+	public static SettingMulti ogreSpawnDifficulty;
+	public static SettingMulti cogreSpawnDifficulty;
+	public static SettingMulti fogreSpawnDifficulty;
+	public static WidgetMulti ogreSpawnDifficultyW;
+	public static WidgetMulti cogreSpawnDifficultyW;
+	public static WidgetMulti fogreSpawnDifficultyW;
+	public static SettingMulti wereSpawnDifficulty;
+	public static SettingMulti wraithSpawnDifficulty;
+	public static SettingMulti fwraithSpawnDifficulty;
+	public static WidgetMulti wereSpawnDifficultyW;
+	public static WidgetMulti wraithSpawnDifficultyW;
+	public static WidgetMulti fwraithSpawnDifficultyW;
+	public static SettingMulti sharkSpawnDifficulty;
+	public static WidgetMulti sharkSpawnDifficultyW;
+	public static SettingInt maxBirdS;
+	public static WidgetInt maxBirdW;
+	public static SettingInt maxDuckS;
+	public static WidgetInt maxDuckW;
+	public static SettingInt maxBunnyS;
+	public static WidgetInt maxBunnyW;
+	public static SettingInt maxHorseS;
+	public static WidgetInt maxHorseW;
+	public static SettingInt maxSharkS;
+	public static WidgetInt maxSharkW;
+	public static SettingInt maxDolphins;
+	public static WidgetInt maxDolphinsW;
+	public static SettingInt maxOgreS;
+	public static WidgetInt maxOgreW;
+	public static SettingInt maxFOgreS;
+	public static WidgetInt maxFOgreW;
+	public static SettingInt maxCOgreS;
+	public static WidgetInt maxCOgreW;
+	public static SettingInt maxWraithS;
+	public static WidgetInt maxWraithW;
+	public static SettingInt maxFWraithS;
+	public static WidgetInt maxFWraithW;
+	public static SettingInt maxWerewolfS;
+	public static WidgetInt maxWerewolfW;
+	public static SettingInt maxWildWolfS;
+	public static WidgetInt maxWildWolfW;
+	public WidgetSimplewindow spawnwindow;
+	public WidgetSimplewindow animalwindow;
+	public WidgetSimplewindow hunterwindow;
+	public WidgetSimplewindow mobwindow;
+	public WidgetSimplewindow watermobwindow;
+	private ManifestManager _manifestManager;
+	
+	public mod_MoCreatures()
+	{
+		try
+		{
+			_manifestManager = new ManifestManager(new File((mod_MoCreatures.class).getProtectionDomain().getCodeSource().getLocation().toURI()));
+			modName = _manifestManager.Value("Implementation-Title");
+			ModLoader.setPrivateValue(ModLoader.class, null, "highestEntityId", Integer.valueOf(100));
+		}
+		catch (Exception e)
+		{
+			return;
+		}
+		ModLoader.AddName(horsesaddle, "Horse Saddle");
+		ModLoader.AddName(sharkteeth, "Shark Teeth");
+		ModLoader.AddName(sharkegg, "Shark Egg");
+		ModLoader.AddName(haystack, "Hay Stack");
+		ModLoader.AddName(sugarlump, "Sugar Lump");
+		ModLoader.RegisterEntityID(EntityHorse.class, "Horse", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityOgre.class, "Ogre", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityFireOgre.class, "FireOgre", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityCaveOgre.class, "CaveOgre", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBoar.class, "Boar", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBear.class, "Bear", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityDuck.class, "Duck", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityLionK.class, "LionK", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityPolarBear.class, "PolarBear", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityWraith.class, "Wraith", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityFlameWraith.class, "FlameWraith", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBunny.class, "Bunny", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBird.class, "Bird", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityFox.class, "Fox", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityWerewolf.class, "Werewolf", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityShark.class, "Shark", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntitySharkEgg.class, "SharkEgg", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityDolphin.class, "Dolphin", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityWildWolf.class, "WildWolf", ModLoader.getUniqueEntityId());
+		MoCSettings = new ModSettings("moCreaturesSMP");
+		MoCScreen = new ModSettingScreen(_manifestManager.Value("Implementation-Title"));
+		SimpleButtonModel simplebuttonmodel = new SimpleButtonModel();
+		simplebuttonmodel.addActionCallback(new ModAction(this, "spawnlimits", new Class[0]));
+		Button button = new Button(simplebuttonmodel);
+		button.setText("Spawn Limits");
+		MoCScreen.append(button);
+		MoCSettings.append(maxMobsS = new SettingInt("MobsSpawnLimit", 70, 1, 1, 1000));
+		maxMobsW = new WidgetInt(maxMobsS, "Hostiles");
+		MoCSettings.append(maxAnimalsS = new SettingInt("AnimalsSpawnLimit", 30, 1, 1, 1000));
+		maxAnimalsW = new WidgetInt(maxAnimalsS, "Animals");
+		MoCSettings.append(maxWaterMobsS = new SettingInt("WaterMobSpawnLimit", 20, 1, 1, 1000));
+		maxWaterMobsW = new WidgetInt(maxWaterMobsS, "Water Mobs");
+		SimpleButtonModel simplebuttonmodel1 = new SimpleButtonModel();
+		simplebuttonmodel1.addActionCallback(new ModAction(this, "animalsettings", new Class[0]));
+		Button button1 = new Button(simplebuttonmodel1);
+		button1.setText("Animals");
+		MoCScreen.append(button1);
+		MoCSettings.append(spawnhorse = new SettingBoolean("SpawnHorse", true));
+		spawnhorseW = new WidgetBoolean(spawnhorse, "Spawn Horses", "Yes", "No");
+		MoCSettings.append(maxHorseS = new SettingInt("maxNumberOfHorses", 15, 0, 1, 100));
+		maxHorseW = new WidgetInt(maxHorseS, "Max Horses");
+		MoCSettings.append(easybreeding = new SettingBoolean("EasyHorseBreeding", false));
+		easybreedingW = new WidgetBoolean(easybreeding, "Easy Horse Breed", "Yes", "No");
+		MoCSettings.append(pegasusChanceS = new SettingInt("PegasusSpawningP", 1, 1, 1, 3));
+		pegasusChanceW = new WidgetInt(pegasusChanceS, "Pegasus chance");
+		MoCSettings.append(spawnbird = new SettingBoolean("SpawnBirds", true));
+		spawnbirdW = new WidgetBoolean(spawnbird, "Spawn Birds", "Yes", "No");
+		MoCSettings.append(maxBirdS = new SettingInt("maxNumberOfBirds", 6, 0, 1, 100));
+		maxBirdW = new WidgetInt(maxBirdS, "Max Birds");
+		MoCSettings.append(spawnbunny = new SettingBoolean("SpawnBunnies", true));
+		spawnbunnyW = new WidgetBoolean(spawnbunny, "Spawn Bunnies", "Yes", "No");
+		MoCSettings.append(maxBunnyS = new SettingInt("maxNumberOfBunnies", 10, 0, 1, 100));
+		maxBunnyW = new WidgetInt(maxBunnyS, "Max Bunnies");
+		MoCSettings.append(spawnduck = new SettingBoolean("SpawnDucks", true));
+		spawnduckW = new WidgetBoolean(spawnduck, "Spawn Ducks", "Yes", "No");
+		MoCSettings.append(maxDuckS = new SettingInt("maxNumberOfDucks", 10, 0, 1, 100));
+		maxDuckW = new WidgetInt(maxDuckS, "Max Ducks");
+		SimpleButtonModel simplebuttonmodel2 = new SimpleButtonModel();
+		simplebuttonmodel2.addActionCallback(new ModAction(this, "huntersettings", new Class[0]));
+		Button button2 = new Button(simplebuttonmodel2);
+		button2.setText("Hunter Creatures");
+		MoCScreen.append(button2);
+		MoCSettings.append(attackhorses = new SettingBoolean("HuntersAttackHorses", true));
+		attackhorsesW = new WidgetBoolean(attackhorses, "Target horses?", "Yes", "No");
+		MoCSettings.append(destroyitems = new SettingBoolean("HuntersDestroyDrops", true));
+		destroyitemsW = new WidgetBoolean(destroyitems, "Destroy drops?", "Yes", "No");
+		MoCSettings.append(spawnlion = new SettingBoolean("SpawnLion", true));
+		spawnlionW = new WidgetBoolean(spawnlion, "Spawn Lions", "Yes", "No");
+		MoCSettings.append(maxLionsS = new SettingInt("maxNumberOfLions", 4, 0, 1, 100));
+		maxLionsW = new WidgetInt(maxLionsS, "Max Lions");
+		MoCSettings.append(spawnbear = new SettingBoolean("SpawnBear", true));
+		spawnbearW = new WidgetBoolean(spawnbear, "Spawn Bears", "Yes", "No");
+		MoCSettings.append(maxBearsS = new SettingInt("maxNumberOfBears", 4, 0, 1, 100));
+		maxBearsW = new WidgetInt(maxBearsS, "Max Bears");
+		MoCSettings.append(spawnpbear = new SettingBoolean("SpawnPolarBear", true));
+		spawnpbearW = new WidgetBoolean(spawnpbear, "Spawn PolarB.", "Yes", "No");
+		MoCSettings.append(maxPBearS = new SettingInt("maxNumberOfPolarBears", 4, 0, 1, 100));
+		maxPBearsW = new WidgetInt(maxPBearS, "Max PolarB.");
+		MoCSettings.append(spawnboar = new SettingBoolean("SpawnBoar", true));
+		spawnboarW = new WidgetBoolean(spawnboar, "Spawn Boars", "Yes", "No");
+		MoCSettings.append(maxBoarsS = new SettingInt("maxNumberOfBoars", 4, 0, 1, 100));
+		maxBoarsW = new WidgetInt(maxBoarsS, "Max Boars");
+		MoCSettings.append(spawnfox = new SettingBoolean("SpawnFox", true));
+		spawnfoxW = new WidgetBoolean(spawnfox, "Spawn Foxes", "Yes", "No");
+		MoCSettings.append(maxFoxesS = new SettingInt("maxNumberOfFoxes", 4, 0, 1, 100));
+		maxFoxesW = new WidgetInt(maxFoxesS, "Max Foxes");
+		SimpleButtonModel simplebuttonmodel3 = new SimpleButtonModel();
+		simplebuttonmodel3.addActionCallback(new ModAction(this, "mobsettings", new Class[0]));
+		Button button3 = new Button(simplebuttonmodel3);
+		button3.setText("Hostile Mobs");
+		MoCScreen.append(button3);
+		MoCSettings.append(spawnogre = new SettingBoolean("SpawnOgre", true));
+		spawnogreW = new WidgetBoolean(spawnogre, "Spawn Ogres", "Yes", "No");
+		MoCSettings.append(maxOgreS = new SettingInt("maxNumberOfOgres", 8, 0, 1, 100));
+		maxOgreW = new WidgetInt(maxOgreS, "Max Ogres");
+		MoCSettings.append(ogreSpawnDifficulty = new SettingMulti("ogreSpawnDifficulty", 1, new String[] {
+				"Easy", "Normal", "Hard"
+		}));
+		ogreSpawnDifficultyW = new WidgetMulti(ogreSpawnDifficulty, "Spawn Ogres in");
+		MoCSettings.append(ogreStrength = new SettingFloat("OgreStrength", 2.5F, 0.1F, 0.1F, 5F));
+		ogreStrengthW = new WidgetFloat(ogreStrength, "Ogre Strength");
+		MoCSettings.append(spawnfogre = new SettingBoolean("SpawnFireOgre", true));
+		spawnfogreW = new WidgetBoolean(spawnfogre, "Spawn Fire O.", "Yes", "No");
+		MoCSettings.append(maxFOgreS = new SettingInt("maxNumberOfFireOgres", 6, 0, 1, 100));
+		maxFOgreW = new WidgetInt(maxFOgreS, "Max Fire O.");
+		MoCSettings.append(fogreSpawnDifficulty = new SettingMulti("FireOgreSpawnDifficulty", 2, new String[] {
+				"Easy", "Normal", "Hard"
+		}));
+		fogreSpawnDifficultyW = new WidgetMulti(fogreSpawnDifficulty, "Spawn Fire O. in");
+		MoCSettings.append(fogreStrength = new SettingFloat("FireOgreStrength", 2.0F, 0.1F, 0.1F, 5F));
+		fogreStrengthW = new WidgetFloat(fogreStrength, "Fire O. Strength");
+		MoCSettings.append(spawncogre = new SettingBoolean("SpawnCaveOgre", true));
+		spawncogreW = new WidgetBoolean(spawncogre, "Spawn Cave O.", "Yes", "No");
+		MoCSettings.append(maxCOgreS = new SettingInt("maxNumberOfCaveOgres", 8, 0, 1, 100));
+		maxCOgreW = new WidgetInt(maxCOgreS, "Max Cave O.");
+		MoCSettings.append(cogreSpawnDifficulty = new SettingMulti("CaveOgreSpawnDifficulty", 1, new String[] {
+				"Easy", "Normal", "Hard"
+		}));
+		cogreSpawnDifficultyW = new WidgetMulti(cogreSpawnDifficulty, "Spawn Cave O. in");
+		MoCSettings.append(cogreStrength = new SettingFloat("CaveOgreStrength", 3F, 0.1F, 0.1F, 5F));
+		cogreStrengthW = new WidgetFloat(cogreStrength, "Cave O. Strength");
+		MoCSettings.append(spawnwerewolf = new SettingBoolean("SpawnWerewolf", true));
+		spawnwerewolfW = new WidgetBoolean(spawnwerewolf, "Spawn Werew.", "Yes", "No");
+		MoCSettings.append(maxWerewolfS = new SettingInt("maxNumberOfWerewolves", 8, 0, 1, 100));
+		maxWerewolfW = new WidgetInt(maxWerewolfS, "Max Werew.");
+		MoCSettings.append(wereSpawnDifficulty = new SettingMulti("wereSpawnDifficulty", 1, new String[] {
+				"Easy", "Normal", "Hard"
+		}));
+		wereSpawnDifficultyW = new WidgetMulti(wereSpawnDifficulty, "Spawn Werew. in");
+		MoCSettings.append(spawnwraith = new SettingBoolean("SpawnWraith", true));
+		spawnwraithW = new WidgetBoolean(spawnwraith, "Spawn Wraiths", "Yes", "No");
+		MoCSettings.append(maxWraithS = new SettingInt("maxNumberOfWraiths", 10, 0, 1, 100));
+		maxWraithW = new WidgetInt(maxWraithS, "Max Wraiths");
+		MoCSettings.append(wraithSpawnDifficulty = new SettingMulti("wraithSpawnDifficulty", 1, new String[] {
+				"Easy", "Normal", "Hard"
+		}));
+		wraithSpawnDifficultyW = new WidgetMulti(wraithSpawnDifficulty, "Spawn Wraiths in");
+		MoCSettings.append(spawnfwraith = new SettingBoolean("SpawnFlameWraith", true));
+		spawnfwraithW = new WidgetBoolean(spawnfwraith, "Spawn Flame W.", "Yes", "No");
+		MoCSettings.append(maxFWraithS = new SettingInt("maxNumberOfFlameWraiths", 6, 0, 1, 100));
+		maxFWraithW = new WidgetInt(maxFWraithS, "Max Flame W.");
+		MoCSettings.append(fwraithSpawnDifficulty = new SettingMulti("flameWraithSpawnDifficulty", 2, new String[] {
+				"Easy", "Normal", "Hard"
+		}));
+		fwraithSpawnDifficultyW = new WidgetMulti(fwraithSpawnDifficulty, "Spawn Flame W. in");
+		MoCSettings.append(spawnwildwolf = new SettingBoolean("SpawnWildWolf", true));
+		spawnwildwolfW = new WidgetBoolean(spawnwildwolf, "Spawn Wild Wolves", "Yes", "No");
+		MoCSettings.append(maxWildWolfS = new SettingInt("maxNumberOfWildWolves", 10, 0, 1, 100));
+		maxWildWolfW = new WidgetInt(maxWildWolfS, "Max Wild Wolves");
+		SimpleButtonModel simplebuttonmodel4 = new SimpleButtonModel();
+		simplebuttonmodel4.addActionCallback(new ModAction(this, "watermobsettings", new Class[0]));
+		Button button4 = new Button(simplebuttonmodel4);
+		button4.setText("Water Mobs");
+		MoCScreen.append(button4);
+		MoCSettings.append(spawnshark = new SettingBoolean("SpawnShark", true));
+		spawnsharkW = new WidgetBoolean(spawnshark, "Spawn Sharks", "Yes", "No");
+		MoCSettings.append(maxSharkS = new SettingInt("maxNumberOfSharks", 7, 0, 1, 100));
+		maxSharkW = new WidgetInt(maxSharkS, "Max Sharks");
+		MoCSettings.append(sharkSpawnDifficulty = new SettingMulti("sharkSpawnDifficulty", 1, new String[] {
+				"Easy", "Normal", "Hard"
+		}));
+		sharkSpawnDifficultyW = new WidgetMulti(sharkSpawnDifficulty, "Spawn Sharks");
+		MoCSettings.append(spawnsquid = new SettingBoolean("SpawnSquid", true));
+		spawnsquidW = new WidgetBoolean(spawnsquid, "Spawn Squids", "Yes", "No");
+		MoCSettings.append(spawndolphin = new SettingBoolean("SpawnDolphins", true));
+		spawndolphinW = new WidgetBoolean(spawndolphin, "Spawn Dolphins", "Yes", "No");
+		MoCSettings.append(maxDolphins = new SettingInt("maxNumberOfDolphins", 7, 0, 1, 100));
+		maxDolphinsW = new WidgetInt(maxDolphins, "Max Dolphins");
+		MoCSettings.append(attackdolphins = new SettingBoolean("DolphinsAttackSharks", true));
+		attackdolphinsW = new WidgetBoolean(attackdolphins, "Aggresive Dolphins?", "Yes", "No");
+		SimpleButtonModel simplebuttonmodel5 = new SimpleButtonModel();
+		simplebuttonmodel5.addActionCallback(new ModAction(MoCSettings, "resetAll", new Class[0]));
+		Button button5 = new Button(simplebuttonmodel5);
+		button5.setText("Reset to defaults");
+		MoCScreen.append(button5);
+		MoCSettings.load();
+		try
+		{
+			ModLoader.setPrivateValue(EnumCreatureType.class, EnumCreatureType.monster, "e", Integer.valueOf(maxMobsS.get()));
+			ModLoader.setPrivateValue(EnumCreatureType.class, EnumCreatureType.creature, "e", Integer.valueOf(maxAnimalsS.get()));
+			ModLoader.setPrivateValue(EnumCreatureType.class, EnumCreatureType.waterCreature, "e", Integer.valueOf(maxWaterMobsS.get()));
+		}
+		catch(Exception exception) { }
+		if(spawnhorse.get())
+			ModLoader.AddSpawn(EntityHorse.class, 10, EnumCreatureType.creature);
+		if(spawnogre.get())
+			ModLoader.AddSpawn(EntityOgre.class, 10, EnumCreatureType.monster);
+		if(spawnfogre.get())
+		{
+			ModLoader.AddSpawn(EntityOgre.class, 10, EnumCreatureType.monster);
+			ModLoader.AddSpawn(EntityOgre.class, 10, EnumCreatureType.monster, new BiomeGenBase[] { new BiomeGenHell() });
+		}
+		if(spawncogre.get())
+			ModLoader.AddSpawn(EntityCaveOgre.class, 10, EnumCreatureType.monster);
+		if(spawnboar.get())
+			ModLoader.AddSpawn(EntityBoar.class, 10, EnumCreatureType.creature);
+		if(spawnbear.get())
+			ModLoader.AddSpawn(EntityBear.class, 10, EnumCreatureType.creature);
+		if(spawnduck.get())
+			ModLoader.AddSpawn(EntityDuck.class, 10, EnumCreatureType.creature);
+		if(spawnlion.get())
+			ModLoader.AddSpawn(EntityLionK.class, 10, EnumCreatureType.creature);
+		if(spawnpbear.get())
+			ModLoader.AddSpawn(EntityPolarBear.class, 10, EnumCreatureType.creature);
+		if(spawnwraith.get())
+			ModLoader.AddSpawn(EntityWraith.class, 10, EnumCreatureType.monster);
+		if(spawnfwraith.get())
+		{
+			ModLoader.AddSpawn(EntityFlameWraith.class, 10, EnumCreatureType.monster);
+			ModLoader.AddSpawn(EntityFlameWraith.class, 10, EnumCreatureType.monster, new BiomeGenBase[] { new BiomeGenHell() });
+		}
+		if(spawnbunny.get())
+			ModLoader.AddSpawn(EntityBunny.class, 10, EnumCreatureType.creature);
+		if(spawnbird.get())
+			ModLoader.AddSpawn(EntityBird.class, 10, EnumCreatureType.creature);
+		if(spawnfox.get())
+			ModLoader.AddSpawn(EntityFox.class, 10, EnumCreatureType.creature);
+		if(spawnwerewolf.get())
+			ModLoader.AddSpawn(EntityWerewolf.class, 10, EnumCreatureType.monster);
+		if(spawnshark.get())
+			ModLoader.AddSpawn(EntityShark.class, 10, EnumCreatureType.waterCreature);
+		if(spawndolphin.get())
+			ModLoader.AddSpawn(EntityDolphin.class, 10, EnumCreatureType.waterCreature);
+		if(!spawnsquid.get())
+			ModLoader.RemoveSpawn(EntitySquid.class, EnumCreatureType.waterCreature);
+		if(!spawnwildwolf.get())
+			ModLoader.RemoveSpawn(EntityWildWolf.class, EnumCreatureType.monster);
+		addRecipes();
+	}
+
+	public String Version()
+	{
+		return _manifestManager.Value("Implementation-Version");
+	}
+
+	public void AddRenderer(Map<Class<? extends Entity>, Render> map)
+	{
+		map.put(EntityHorse.class, new RenderHorse(new ModelHorse2(), new ModelHorse1()));
+		map.put(EntityFireOgre.class, new RenderFireOgre(new ModelOgre2(), new ModelOgre1(), 1.5F));
+		map.put(EntityCaveOgre.class, new RenderCaveOgre(new ModelOgre2(), new ModelOgre1(), 1.5F));
+		map.put(EntityOgre.class, new RenderOgre(new ModelOgre2(), new ModelOgre1(), 1.5F));
+		map.put(EntityBoar.class, new RenderPig(new ModelPig(), new ModelPig(0.5F), 0.7F));
+		map.put(EntityBear.class, new RenderBear(new ModelBear2(), new ModelBear1(), 0.7F));
+		map.put(EntityDuck.class, new RenderChicken(new ModelChicken(), 0.3F));
+		map.put(EntityLionK.class, new RenderLionK(new ModelLionK2(), new ModelLionK1(), 0.7F));
+		map.put(EntityPolarBear.class, new RenderPolarBear(new ModelBear2(), new ModelBear1(), 0.7F));
+		map.put(EntityWraith.class, new RenderBiped(new ModelWraith(), 0.5F));
+		map.put(EntityFlameWraith.class, new RenderBiped(new ModelWraith(), 0.5F));
+		map.put(EntityBunny.class, new RenderBunny(new ModelBunny(), 0.3F));
+		map.put(EntityBird.class, new RenderBird(new ModelBird(), 0.3F));
+		map.put(EntityFox.class, new RenderFox(new ModelFox()));
+		map.put(EntityWerewolf.class, new RenderWerewolf(new ModelWereHuman(), new ModelWerewolf(), 0.7F));
+		map.put(EntityShark.class, new RenderShark(new ModelShark(), 0.6F));
+		map.put(EntitySharkEgg.class, new RenderSharkEgg(new ModelSharkEgg(), 0.1F));
+		map.put(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.6F));
+		map.put(EntityWildWolf.class, new RenderWildWolf(new ModelWildWolf2(), new ModelWildWolf1(), 0.7F));
+	}
+
+	public void spawnlimits()
+	{
+		if(spawnwindow == null)
+		{
+			WidgetClassicTwocolumn widgetclassictwocolumn = new WidgetClassicTwocolumn(new Widget[0]);
+			widgetclassictwocolumn.add(maxMobsW);
+			widgetclassictwocolumn.add(maxAnimalsW);
+			widgetclassictwocolumn.add(maxWaterMobsW);
+			spawnwindow = new WidgetSimplewindow(widgetclassictwocolumn, "Creature Spawn Limits");
+		}
+		GuiModScreen.show(spawnwindow);
+	}
+
+	public void animalsettings()
+	{
+		if(animalwindow == null)
+		{
+			WidgetClassicTwocolumn widgetclassictwocolumn = new WidgetClassicTwocolumn(new Widget[0]);
+			widgetclassictwocolumn.add(spawnbirdW);
+			widgetclassictwocolumn.add(maxBirdW);
+			widgetclassictwocolumn.add(spawnbunnyW);
+			widgetclassictwocolumn.add(maxBunnyW);
+			widgetclassictwocolumn.add(spawnduckW);
+			widgetclassictwocolumn.add(maxDuckW);
+			widgetclassictwocolumn.add(spawnhorseW);
+			widgetclassictwocolumn.add(maxHorseW);
+			widgetclassictwocolumn.add(easybreedingW);
+			widgetclassictwocolumn.add(pegasusChanceW);
+			animalwindow = new WidgetSimplewindow(widgetclassictwocolumn, "Pacific Creatures Settings");
+		}
+		GuiModScreen.show(animalwindow);
+	}
+
+	public void huntersettings()
+	{
+		if(hunterwindow == null)
+		{
+			WidgetClassicTwocolumn widgetclassictwocolumn = new WidgetClassicTwocolumn(new Widget[0]);
+			widgetclassictwocolumn.add(attackhorsesW);
+			widgetclassictwocolumn.add(destroyitemsW);
+			widgetclassictwocolumn.add(spawnlionW);
+			widgetclassictwocolumn.add(maxLionsW);
+			widgetclassictwocolumn.add(spawnbearW);
+			widgetclassictwocolumn.add(maxBearsW);
+			widgetclassictwocolumn.add(spawnpbearW);
+			widgetclassictwocolumn.add(maxPBearsW);
+			widgetclassictwocolumn.add(spawnboarW);
+			widgetclassictwocolumn.add(maxBoarsW);
+			widgetclassictwocolumn.add(spawnfoxW);
+			widgetclassictwocolumn.add(maxFoxesW);
+			hunterwindow = new WidgetSimplewindow(widgetclassictwocolumn, "Hunter Creatures Settings");
+		}
+		GuiModScreen.show(hunterwindow);
+	}
+
+	public void mobsettings()
+	{
+		if(mobwindow == null)
+		{
+			WidgetClassicTwocolumn widgetclassictwocolumn = new WidgetClassicTwocolumn(new Widget[0]);
+			widgetclassictwocolumn.add(spawnogreW);
+			widgetclassictwocolumn.add(maxOgreW);
+			widgetclassictwocolumn.add(ogreSpawnDifficultyW);
+			widgetclassictwocolumn.add(ogreStrengthW);
+			widgetclassictwocolumn.add(spawnfogreW);
+			widgetclassictwocolumn.add(maxFOgreW);
+			widgetclassictwocolumn.add(fogreSpawnDifficultyW);
+			widgetclassictwocolumn.add(fogreStrengthW);
+			widgetclassictwocolumn.add(spawncogreW);
+			widgetclassictwocolumn.add(maxCOgreW);
+			widgetclassictwocolumn.add(cogreSpawnDifficultyW);
+			widgetclassictwocolumn.add(cogreStrengthW);
+			widgetclassictwocolumn.add(spawnwraithW);
+			widgetclassictwocolumn.add(maxWraithW);
+			widgetclassictwocolumn.add(wraithSpawnDifficultyW);
+			widgetclassictwocolumn.add(spawnfwraithW);
+			widgetclassictwocolumn.add(maxFWraithW);
+			widgetclassictwocolumn.add(fwraithSpawnDifficultyW);
+			widgetclassictwocolumn.add(spawnwerewolfW);
+			widgetclassictwocolumn.add(maxWerewolfW);
+			widgetclassictwocolumn.add(wereSpawnDifficultyW);
+			widgetclassictwocolumn.add(spawnwildwolfW);
+			widgetclassictwocolumn.add(maxWildWolfW);
+			mobwindow = new WidgetSimplewindow(widgetclassictwocolumn, "Hostile Mob Settings");
+		}
+		GuiModScreen.show(mobwindow);
+	}
+
+	public void watermobsettings()
+	{
+		if(watermobwindow == null)
+		{
+			WidgetClassicTwocolumn widgetclassictwocolumn = new WidgetClassicTwocolumn(new Widget[0]);
+			widgetclassictwocolumn.add(spawnsharkW);
+			widgetclassictwocolumn.add(maxSharkW);
+			widgetclassictwocolumn.add(sharkSpawnDifficultyW);
+			widgetclassictwocolumn.add(spawnsquidW);
+			widgetclassictwocolumn.add(spawndolphinW);
+			widgetclassictwocolumn.add(maxDolphinsW);
+			widgetclassictwocolumn.add(attackdolphinsW);
+			watermobwindow = new WidgetSimplewindow(widgetclassictwocolumn, "Water Mobs Settings");
+		}
+		GuiModScreen.show(watermobwindow);
+	}
+
+	private void addRecipes()
+	{
+		ModLoader.AddRecipe(new ItemStack(horsesaddle, 1), new Object[] {
+			"XXX", "X#X", "# #", Character.valueOf('#'), Item.ingotIron, Character.valueOf('X'), Item.leather
+		});
+		ModLoader.AddRecipe(new ItemStack(haystack, 1), new Object[] {
+			"XXX", "XXX", Character.valueOf('X'), Item.wheat
+		});
+		ModLoader.AddRecipe(new ItemStack(Item.wheat, 6), new Object[] {
+			"X", Character.valueOf('X'), haystack
+		});
+		ModLoader.AddRecipe(new ItemStack(sugarlump, 1), new Object[] {
+			"XX", "##", Character.valueOf('X'), Item.sugar, Character.valueOf('#'), Item.sugar
+		});
+		ModLoader.AddRecipe(new ItemStack(horsesaddle, 1), new Object[] {
+			"X", "#", Character.valueOf('X'), Item.saddle, Character.valueOf('#'), Item.leather
+		});
+	}
+}

@@ -1,0 +1,7 @@
+Name: /
+Sealed: true
+Specification-Title: Mo' Creatures
+Specification-Vendor: DrZhark
+Specification-Version: v2.8.1
+Implementation-Title: Mo'Creatures SMP Client
+Implementation-Vendor: Finnithnel Heiriol

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="sources"/>
+	<classpathentry exported="true" kind="lib" path="D:/Minecraft/Workspaces/moCreatures/client/debug/output/mods/mod_Dependances.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/Minecraft/Workspaces/moCreatures/client/debug/output/bin/jinput.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/Minecraft/Workspaces/moCreatures/client/debug/output/bin/natives"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="D:/Minecraft/Workspaces/moCreatures/client/debug/output/bin/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/Minecraft/Workspaces/moCreatures/client/debug/output/bin/natives"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="D:/Minecraft/Workspaces/moCreatures/client/debug/output/bin/lwjgl_util.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/Minecraft/Workspaces/moCreatures/client/debug/output/bin/natives"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="D:/Minecraft/Workspaces/moCreatures/client/debug/output/bin/minecraft.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="output/mods"/>
+</classpath>

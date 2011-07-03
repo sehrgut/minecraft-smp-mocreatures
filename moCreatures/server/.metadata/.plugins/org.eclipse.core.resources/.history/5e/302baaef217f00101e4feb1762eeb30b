@@ -1,0 +1,285 @@
+package net.minecraft.src;
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import modManager.loader.BaseMod;
+import modManager.loader.ModLoader;
+import modManager.tools.ManifestManager;
+import net.minecraft.server.MinecraftServer;
+
+public class mod_MoCreatures extends BaseMod
+{
+	public static String modName = "Finnithnel's SMP Mo'Creatures Mod";
+	public static Item horseSaddle = (new HorseSaddle(3772)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/horsesaddle.png")).setItemName("HorseSaddle");
+	public static Item hayStack = (new HayStack(3775)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/haystack.png")).setItemName("HayStack");
+	public static Item sugarLump = (new SugarLump(3776)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/sugarlump.png")).setItemName("SugarLump");
+	public static Item sharkTeeth = (new Item(3774)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/sharkteeth.png")).setItemName("sharkteeth");
+	public static Item sharkEgg = (new ItemSharkEgg(3773)).setIconIndex(ModLoader.addOverride("/gui/items.png", "/mob/sharkegg.png")).setItemName("sharkegg");
+	public static int worldDifficulty;
+	public static int maxMobs;
+	public static int maxAnimals;
+	public static int maxWaterMobs;
+	public static int maxLions;
+	public static int maxBears;
+	public static int maxPolarBears;
+	public static int maxBoars;
+	public static int maxFoxes;
+	public static int maxBirds;
+	public static int maxDucks;
+	public static int maxBunnies;
+	public static int maxHorses;
+	public static int maxSharks;
+	public static int maxSquids;
+	public static int maxDolphins;
+	public static int maxOgres;
+	public static int maxFireOgres;
+	public static int maxCaveOgres;
+	public static int maxWraiths;
+	public static int maxFireWraiths;
+	public static int maxWerewolves;
+	public static int maxWolves;
+	public static boolean spawnBears;
+	public static boolean spawnBirds;
+	public static boolean spawnBoars;
+	public static boolean spawnBunnies;
+	public static boolean spawnCaveOgres;
+	public static boolean spawnDolphins;
+	public static boolean spawnDucks;
+	public static boolean spawnFireOgres;
+	public static boolean spawnFireWraiths;
+	public static boolean spawnFoxes;
+	public static boolean spawnHorses;
+	public static boolean spawnLions;
+	public static boolean spawnOgres;
+	public static boolean spawnPolarBears;
+	public static boolean spawnSharks;
+	public static boolean spawnSquids;
+	public static boolean spawnWerewolves;
+	public static boolean spawnWildWolves;
+	public static boolean spawnWraiths;
+	public static boolean dolphinsAttackSharks;
+	public static boolean huntersAttackHorses;
+	public static boolean huntersDestroyDrops;
+	public static boolean easyBreeding;
+	public static int pegasusChance;
+	public static float caveOgresStrength;
+	public static float ogresStrength;
+	public static float fireOgresStrength;
+	public static int caveOgresSpawnDifficulty;
+	public static int fireOgresSpawnDifficulty;
+	public static int fireWraithsSpawnDifficulty;
+	public static int ogresSpawnDifficulty;
+	public static int sharksSpawnDifficulty;
+	public static int werewolvesSpawnDifficulty;
+	public static int wraithsSpawnDifficulty;
+	public static PropertyManager propertyManagerObj;
+	private static Map<String, Integer> difficulties = new HashMap<String, Integer>();
+	private ManifestManager _manifestManager;
+
+	public mod_MoCreatures()
+	{
+		try
+		{
+			_manifestManager = new ManifestManager(new File((mod_MoCreatures.class).getProtectionDomain().getCodeSource().getLocation().toURI()));
+			modName = _manifestManager.value("Implementation-Title");
+		}
+		catch (Exception e)
+		{
+			return;
+		}
+		ModLoader.RegisterEntityID(EntityHorse.class, "Horse", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityOgre.class, "Ogre", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityFireOgre.class, "FireOgre", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityCaveOgre.class, "CaveOgre", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBoar.class, "Boar", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBear.class, "Bear", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityDuck.class, "Duck", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityLionK.class, "LionK", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityWolf.class, "Wolf", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityPolarBear.class, "PolarBear", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityWraith.class, "Wraith", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityFlameWraith.class, "FlameWraith", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBunny.class, "Bunny", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityBird.class, "Bird", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityFox.class, "Fox", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityWerewolf.class, "Werewolf", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityShark.class, "Shark", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntitySharkEgg.class, "SharkEgg", ModLoader.getUniqueEntityId());
+		ModLoader.RegisterEntityID(EntityDolphin.class, "Dolphin", ModLoader.getUniqueEntityId());
+
+		difficulties.put("Peaceful", Integer.valueOf(0));
+		difficulties.put("Easy", Integer.valueOf(1));
+		difficulties.put("Normal", Integer.valueOf(2));
+		difficulties.put("Hard", Integer.valueOf(3));
+
+		propertyManagerObj = new PropertyManager(new File("server.properties"));
+		worldDifficulty = getDifficulty(propertyManagerObj.getStringProperty("World-Difficulty", "Peaceful"));
+
+		maxMobs = propertyManagerObj.getIntProperty("SpawnLimit-Mobs", 70);
+		maxAnimals = propertyManagerObj.getIntProperty("SpawnLimit-Animals", 30);
+		maxWaterMobs = propertyManagerObj.getIntProperty("SpawnLimit-WaterMobs", 20);
+
+		spawnHorses = propertyManagerObj.getBooleanProperty("Horses-Spawn", true);
+		maxHorses = propertyManagerObj.getIntProperty("Horses-MaxNumber", 15);
+		easyBreeding = propertyManagerObj.getBooleanProperty("Horses-EasyBreeding", false);
+		pegasusChance = propertyManagerObj.getIntProperty("Horses-PegasusSpawningChance", 1);
+		spawnBirds = propertyManagerObj.getBooleanProperty("Birds-Spawn", true);
+		maxBirds = propertyManagerObj.getIntProperty("Birds-MaxNumber", 6);
+		spawnBunnies = propertyManagerObj.getBooleanProperty("Bunnies-Spawn", true);
+		maxBunnies = propertyManagerObj.getIntProperty("Bunnies-MaxNumber", 10);
+		spawnDucks = propertyManagerObj.getBooleanProperty("Ducks-Spawn", true);
+		maxDucks = propertyManagerObj.getIntProperty("Ducks-MaxNumber", 10);
+
+		huntersAttackHorses = propertyManagerObj.getBooleanProperty("Hunters-AttackHorses", true);
+		huntersDestroyDrops = propertyManagerObj.getBooleanProperty("Hunters-DestroyDrops", true);
+		spawnLions = propertyManagerObj.getBooleanProperty("Lions-Spawn", true);
+		maxLions = propertyManagerObj.getIntProperty("Lions-MaxNumber", 4);
+		spawnBears = propertyManagerObj.getBooleanProperty("Bears-Spawn", true);
+		maxBears = propertyManagerObj.getIntProperty("Bears-MaxNumber", 4);
+		spawnPolarBears = propertyManagerObj.getBooleanProperty("PolarBears-Spawn", true);
+		maxPolarBears = propertyManagerObj.getIntProperty("PolarBears-MaxNumber", 4);
+		spawnBoars = propertyManagerObj.getBooleanProperty("Boars-Spawn", true);
+		maxBoars = propertyManagerObj.getIntProperty("Boars-MaxNumber", 4);
+		spawnFoxes = propertyManagerObj.getBooleanProperty("Foxes-Spawn", true);
+		maxFoxes = propertyManagerObj.getIntProperty("Foxes-MaxNumber", 4);
+
+		/*spawnOgres = propertyManagerObj.getBooleanProperty("Ogres-Spawn", true);
+		maxOgres = propertyManagerObj.getIntProperty("Ogres-MaxNumber", 8);
+		ogresSpawnDifficulty = getDifficulty(propertyManagerObj.getStringProperty("Ogres-SpawnDifficulty", "Easy"));
+		ogresStrength = getFloatProperty("Ogres-Strength", 2.5F);
+		spawnFireOgres = propertyManagerObj.getBooleanProperty("FireOgres-Spawn", true);
+		maxFireOgres = propertyManagerObj.getIntProperty("FireOgres-MaxNumber", 6);
+		fireOgresSpawnDifficulty = getDifficulty(propertyManagerObj.getStringProperty("FireOgres-SpawnDifficulty", "Normal"));
+		fireOgresStrength = getFloatProperty("FireOgres-Strength", 2.0F);
+		spawnCaveOgres = propertyManagerObj.getBooleanProperty("CaveOgres-Spawn", true);
+		maxCaveOgres = propertyManagerObj.getIntProperty("CaveOgres-MaxNumber", 6);
+		caveOgresSpawnDifficulty = getDifficulty(propertyManagerObj.getStringProperty("CaveOgres-SpawnDifficulty", "Easy"));
+		caveOgresStrength = getFloatProperty("CaveOgres-Strength", 3F);
+		spawnWerewolves = propertyManagerObj.getBooleanProperty("Werewolves-Spawn", true);
+		maxWerewolves = propertyManagerObj.getIntProperty("Werewolves-MaxNumber", 8);
+		werewolvesSpawnDifficulty = getDifficulty(propertyManagerObj.getStringProperty("Werewolves-SpawnDifficulty", "Easy"));
+		spawnWraiths = propertyManagerObj.getBooleanProperty("Wraiths-Spawn", true);
+		maxWraiths = propertyManagerObj.getIntProperty("Wraiths-MaxNumber", 10);
+		wraithsSpawnDifficulty = getDifficulty(propertyManagerObj.getStringProperty("Wraiths-SpawnDifficulty", "Easy"));
+		spawnFireWraiths = propertyManagerObj.getBooleanProperty("FlameWraiths-Spawn", true);
+		maxFireWraiths = propertyManagerObj.getIntProperty("FlameWraiths-MaxNumber", 6);
+		fireWraithsSpawnDifficulty = getDifficulty(propertyManagerObj.getStringProperty("FlameWraiths-SpawnDifficulty", "Normal"));*/
+		spawnWildWolves = propertyManagerObj.getBooleanProperty("Wolves-Spawn", true);
+		maxWolves = propertyManagerObj.getIntProperty("Wolves-MaxNumber", 10);
+
+		/*spawnSharks = propertyManagerObj.getBooleanProperty("Sharks-Spawn", true);
+		maxSharks = propertyManagerObj.getIntProperty("Sharks-MaxNumber", 7);
+		sharksSpawnDifficulty = getDifficulty(propertyManagerObj.getStringProperty("Sharks-SpawnDifficulty", "Easy"));*/
+		spawnSquids = propertyManagerObj.getBooleanProperty("Squids-Spawn", true);
+		maxSquids = propertyManagerObj.getIntProperty("Sharks-MaxNumber", 6);
+		/*spawnDolphins = propertyManagerObj.getBooleanProperty("Dolphins-Spawn", true);
+		maxDolphins = propertyManagerObj.getIntProperty("Dolphins-MaxNumber", 7);
+		dolphinsAttackSharks = propertyManagerObj.getBooleanProperty("Dolphins-AttackSharks", true);*/
+
+		spawnWraiths = false;
+		spawnFireWraiths = false;
+		spawnOgres = false;
+		spawnFireOgres = false;
+		spawnCaveOgres = false;
+		spawnSharks = false;
+		spawnDolphins = false;
+
+		ModLoader.setPrivateValue(EnumCreatureType.class, EnumCreatureType.monster, "e", "maxNumberOfCreature", Integer.valueOf(maxMobs));
+		ModLoader.setPrivateValue(EnumCreatureType.class, EnumCreatureType.creature, "e", "maxNumberOfCreature", Integer.valueOf(maxAnimals));
+		ModLoader.setPrivateValue(EnumCreatureType.class, EnumCreatureType.waterCreature, "e", "maxNumberOfCreature", Integer.valueOf(maxWaterMobs));
+
+		if(spawnHorses)
+			ModLoader.AddSpawn(EntityHorse.class, 10, EnumCreatureType.creature);
+		if(spawnOgres)
+			ModLoader.AddSpawn(EntityOgre.class, 10, EnumCreatureType.monster);
+		if(spawnFireOgres)
+		{
+			ModLoader.AddSpawn(EntityOgre.class, 10, EnumCreatureType.monster);
+			ModLoader.AddSpawn(EntityOgre.class, 10, EnumCreatureType.monster, new BiomeGenBase[] { new BiomeGenHell() });
+		}
+		if(spawnCaveOgres)
+			ModLoader.AddSpawn(EntityCaveOgre.class, 10, EnumCreatureType.monster);
+		if(spawnBoars)
+			ModLoader.AddSpawn(EntityBoar.class, 10, EnumCreatureType.creature);
+		if(spawnBears)
+			ModLoader.AddSpawn(EntityBear.class, 10, EnumCreatureType.creature);
+		if(spawnDucks)
+			ModLoader.AddSpawn(EntityDuck.class, 10, EnumCreatureType.creature);
+		if(spawnLions)
+			ModLoader.AddSpawn(EntityLionK.class, 10, EnumCreatureType.creature);
+		if(spawnPolarBears)
+			ModLoader.AddSpawn(EntityPolarBear.class, 10, EnumCreatureType.monster);
+		if(spawnWraiths)
+			ModLoader.AddSpawn(EntityWraith.class, 10, EnumCreatureType.monster);
+		if(spawnFireWraiths)
+		{
+			ModLoader.AddSpawn(EntityFlameWraith.class, 10, EnumCreatureType.monster);
+			ModLoader.AddSpawn(EntityFlameWraith.class, 10, EnumCreatureType.monster, new BiomeGenBase[] { new BiomeGenHell() });
+		}
+		if(spawnBunnies)
+			ModLoader.AddSpawn(EntityBunny.class, 10, EnumCreatureType.creature);
+		if(spawnBirds)
+			ModLoader.AddSpawn(EntityBird.class, 10, EnumCreatureType.creature);
+		if(spawnFoxes)
+			ModLoader.AddSpawn(EntityFox.class, 10, EnumCreatureType.creature);
+		if(spawnWerewolves)
+			ModLoader.AddSpawn(EntityWerewolf.class, 10, EnumCreatureType.monster);
+		if(spawnSharks)
+			ModLoader.AddSpawn(EntityShark.class, 10, EnumCreatureType.waterCreature);
+		if(spawnDolphins)
+			ModLoader.AddSpawn(EntityDolphin.class, 10, EnumCreatureType.waterCreature);
+		if(!spawnSquids)
+			ModLoader.RemoveSpawn(EntitySquid.class, EnumCreatureType.waterCreature);
+		if(spawnWildWolves)
+			ModLoader.RemoveSpawn(EntityWildWolf.class, EnumCreatureType.monster);
+	}
+
+	public String version()
+	{
+		return "v1.1.0 (MoCr 2.8.1) (MC 1.3_01)";
+	}
+
+	public void addRecipes(CraftingManager craftingmanager)
+	{
+		craftingmanager.addRecipe(new ItemStack(horseSaddle, 1), new Object[] {
+			"XXX", "X#X", "# #", Character.valueOf('#'), Item.ingotIron, Character.valueOf('X'), Item.leather
+		});
+		craftingmanager.addRecipe(new ItemStack(hayStack, 1), new Object[] {
+			"XXX", "XXX", Character.valueOf('X'), Item.wheat
+		});
+		craftingmanager.addRecipe(new ItemStack(Item.wheat, 6), new Object[] {
+			"X", Character.valueOf('X'), hayStack
+		});
+		craftingmanager.addRecipe(new ItemStack(sugarLump, 1), new Object[] {
+			"XX", "##", Character.valueOf('X'), Item.sugar, Character.valueOf('#'), Item.sugar
+		});
+		craftingmanager.addRecipe(new ItemStack(horseSaddle, 1), new Object[] {
+			"X", "#", Character.valueOf('X'), Item.saddle, Character.valueOf('#'), Item.leather
+		});
+	}
+
+	private int getDifficulty(String difficulty)
+	{
+		if (difficulties.containsKey(difficulty))
+			return difficulties.get(difficulty);
+		return 1;
+	}
+
+	private float getFloatProperty(String s, float i)
+	{
+		try
+		{
+			return Float.parseFloat(propertyManagerObj.getStringProperty(s, ""+i));
+		}
+		catch(NumberFormatException exception)
+		{
+			MinecraftServer.logger.warning(new StringBuilder("Property [").append(s).append("] must be a float value. Default value(").append(i).append(") is used.").toString());
+		}
+		return i;
+	}
+}

@@ -1,0 +1,93 @@
+package net.minecraft.src;
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode 
+
+
+public class ModelShark extends ModelBase
+{
+
+    public ModelShark()
+    {
+        Body = new ModelRenderer(6, 6);
+        Body.addBox(0.0F, 0.0F, 0.0F, 6, 8, 18, 0.0F);
+        Body.setPosition(-4F, 17F, -10F);
+        UHead = new ModelRenderer(0, 0);
+        UHead.addBox(0.0F, 0.0F, 0.0F, 5, 2, 8, 0.0F);
+        UHead.setPosition(-3.5F, 21F, -16.5F);
+        UHead.rotateAngleX = 0.5235988F;
+        DHead = new ModelRenderer(44, 0);
+        DHead.addBox(0.0F, 0.0F, 0.0F, 5, 2, 5, 0.0F);
+        DHead.setPosition(-3.5F, 21.5F, -13.5F);
+        DHead.rotateAngleX = -0.261799F;
+        RHead = new ModelRenderer(0, 3);
+        RHead.addBox(0.0F, 0.0F, 0.0F, 1, 6, 6, 0.0F);
+        RHead.setPosition(-3.45F, 21.3F, -13.85F);
+        RHead.rotateAngleX = 0.7853981F;
+        LHead = new ModelRenderer(0, 3);
+        LHead.addBox(0.0F, 0.0F, 0.0F, 1, 6, 6, 0.0F);
+        LHead.setPosition(0.45F, 21.3F, -13.8F);
+        LHead.rotateAngleX = 0.7853981F;
+        PTail = new ModelRenderer(36, 8);
+        PTail.addBox(0.0F, 0.0F, 0.0F, 4, 6, 10, 0.0F);
+        PTail.setPosition(-3F, 18F, 8F);
+        UpperFin = new ModelRenderer(6, 12);
+        UpperFin.addBox(0.0F, 0.0F, 0.0F, 1, 4, 8, 0.0F);
+        UpperFin.setPosition(-1.5F, 17F, -1F);
+        UpperFin.rotateAngleX = 0.7853981F;
+        UpperTailFin = new ModelRenderer(6, 12);
+        UpperTailFin.addBox(0.0F, 0.0F, 0.0F, 1, 4, 8, 0.0F);
+        UpperTailFin.setPosition(-1.5F, 18F, 16F);
+        UpperTailFin.rotateAngleX = 0.5235988F;
+        LowerTailFin = new ModelRenderer(8, 14);
+        LowerTailFin.addBox(0.0F, 0.0F, 0.0F, 1, 4, 6, 0.0F);
+        LowerTailFin.setPosition(-1.5F, 21F, 18F);
+        LowerTailFin.rotateAngleX = -0.7853981F;
+        LeftFin = new ModelRenderer(18, 0);
+        LeftFin.addBox(0.0F, 0.0F, 0.0F, 8, 1, 4, 0.0F);
+        LeftFin.setPosition(2.0F, 24F, -5F);
+        LeftFin.rotateAngleY = -0.5235988F;
+        LeftFin.rotateAngleZ = 0.5235988F;
+        RightFin = new ModelRenderer(18, 0);
+        RightFin.addBox(0.0F, 0.0F, 0.0F, 8, 1, 4, 0.0F);
+        RightFin.setPosition(-10F, 27.5F, -1F);
+        RightFin.rotateAngleY = 0.5235988F;
+        RightFin.rotateAngleZ = -0.5235988F;
+    }
+
+    public void render(float f, float f1, float f2, float f3, float f4, float f5)
+    {
+        setRotationAngles(f, f1, f2, f3, f4, f5);
+        Body.render(f5);
+        PTail.render(f5);
+        UHead.render(f5);
+        DHead.render(f5);
+        RHead.render(f5);
+        LHead.render(f5);
+        UpperFin.render(f5);
+        UpperTailFin.render(f5);
+        LowerTailFin.render(f5);
+        LeftFin.render(f5);
+        RightFin.render(f5);
+    }
+
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+    {
+        UpperTailFin.rotateAngleY = MathHelper.cos(f * 0.6662F) * f1;
+        LowerTailFin.rotateAngleY = MathHelper.cos(f * 0.6662F) * f1;
+    }
+
+    public ModelRenderer LHead;
+    public ModelRenderer RHead;
+    public ModelRenderer UHead;
+    public ModelRenderer DHead;
+    public ModelRenderer RTail;
+    public ModelRenderer LTail;
+    public ModelRenderer PTail;
+    public ModelRenderer Body;
+    public ModelRenderer UpperFin;
+    public ModelRenderer UpperTailFin;
+    public ModelRenderer LowerTailFin;
+    public ModelRenderer RightFin;
+    public ModelRenderer LeftFin;
+}

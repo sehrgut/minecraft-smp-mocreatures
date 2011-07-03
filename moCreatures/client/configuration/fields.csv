@@ -1,0 +1,5 @@
+"_field_blockHardness","_field_blockHardness","_aa","Ljava/lang/reflect/Field;","Ljava/lang/reflect/Field;","BlockHelper","_aa_","moCreatures/helpers","0"
+"_field_playerToAttack","_field_playerToAttack","_aa","Ljava/lang/reflect/Field;","Ljava/lang/reflect/Field;","EntityCreatureHelper","_ab_","moCreatures/helpers","0"
+"_field_inWater","_field_inWater","_aa","Ljava/lang/reflect/Field;","Ljava/lang/reflect/Field;","EntityHelper","_ac_","moCreatures/helpers","0"
+"_field_texture","_field_texture","_aa","Ljava/lang/reflect/Field;","Ljava/lang/reflect/Field;","EntityLivingHelper","_ad_","moCreatures/helpers","0"
+"_field_isJumping","_field_isJumping","_aa","Ljava/lang/reflect/Field;","Ljava/lang/reflect/Field;","EntityLivingHelper","_ad_","moCreatures/helpers","0"

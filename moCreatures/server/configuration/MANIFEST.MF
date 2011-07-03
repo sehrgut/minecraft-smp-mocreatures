@@ -1,0 +1,6 @@
+Name: /
+Sealed: true
+Specification-Title: Mo'Creatures SMP Server
+Specification-Vendor: Finnithnel Heiriol
+Implementation-Title: Mo'Creatures SMP Server
+Implementation-Vendor: Finnithnel Heiriol

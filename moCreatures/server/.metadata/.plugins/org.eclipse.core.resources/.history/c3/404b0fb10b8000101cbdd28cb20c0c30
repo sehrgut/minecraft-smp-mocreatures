@@ -1,0 +1,5 @@
+package moCreatures.proxies;
+
+public class EntityProxy {
+
+}

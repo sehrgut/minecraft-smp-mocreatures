@@ -1,0 +1,219 @@
+package moCreatures.entities;
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode 
+
+import java.util.List;
+
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
+
+import moCreatures.mod_mocreatures;
+import moCreatures.helpers.EntityHelper;
+
+public class EntityShark extends EntityCustomWM
+{
+
+    public EntityShark(World world)
+    {
+        super(world);
+        texture = "/moCreatures/textures/shark.png";
+        setSize(1.8F, 1.3F);
+        b = 1.0F + rand.nextFloat();
+        adult = false;
+        tamed = false;
+        health = 25;
+    }
+
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+        if(!adult && rand.nextInt(50) == 0)
+        {
+            b += 0.01F;
+            if(b >= 2.0F)
+            {
+                adult = true;
+            }
+        }
+    }
+
+    protected Entity findPlayerToAttack()
+    {
+        if(worldObj.difficultySetting > 0 && b >= 1.0F)
+        {
+            EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, 16D);
+            if(entityplayer != null && EntityHelper.getInWater(entityplayer) && !tamed)
+            {
+                return entityplayer;
+            }
+            if(rand.nextInt(30) == 0)
+            {
+            	EntityLiving entityliving = FindTarget(this, 16D);
+                if(entityliving != null && EntityHelper.getInWater(entityliving))
+                {
+                    return entityliving;
+                }
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+	public EntityLiving FindTarget(Entity entity, double d)
+    {
+        double d1 = -1D;
+        EntityLiving entityliving = null;
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(d, d, d));
+        for(int i = 0; i < list.size(); i++)
+        {
+            Entity entity1 = (Entity)list.get(i);
+            if(!(entity1 instanceof EntityLiving) || (entity1 instanceof EntityShark) || (entity1 instanceof EntitySharkEgg) || (entity1 instanceof EntityPlayer) || (entity1 instanceof EntityDolphin))
+            {
+                continue;
+            }
+            double d2 = entity1.getDistanceSq(entity.posX, entity.posY, entity.posZ);
+            if((d < 0.0D || d2 < d * d) && (d1 == -1D || d2 < d1) && ((EntityLiving)entity1).canEntityBeSeen(entity))
+            {
+                d1 = d2;
+                entityliving = (EntityLiving)entity1;
+            }
+        }
+
+        return entityliving;
+    }
+
+    public boolean attackEntityFrom(Entity entity, int i)
+    {
+        if(super.attackEntityFrom(entity, i) && worldObj.difficultySetting > 0)
+        {
+            if(riddenByEntity == entity || ridingEntity == entity)
+            {
+                return true;
+            }
+            if(entity != this)
+            {
+                playerToAttack = entity;
+            }
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    protected void attackEntity(Entity entity, float f)
+    {
+        if((double)f < 3.5D && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY && b >= 1.0F)
+        {
+            attackTime = 20;
+            entity.attackEntityFrom(this, 5);
+            if(!(entity instanceof EntityPlayer))
+            {
+                destroyDrops(this, 3D);
+            }
+        }
+    }
+
+    public void writeEntityToNBT(NBTTagCompound nbttagcompound)
+    {
+        super.writeEntityToNBT(nbttagcompound);
+        nbttagcompound.setBoolean("Tamed", tamed);
+        nbttagcompound.setBoolean("Adult", adult);
+        nbttagcompound.setFloat("Age", b);
+        nbttagcompound.setInteger("CounterEntity", counterEntity);
+    }
+
+    public void readEntityFromNBT(NBTTagCompound nbttagcompound)
+    {
+        super.readEntityFromNBT(nbttagcompound);
+        tamed = nbttagcompound.getBoolean("Tamed");
+        adult = nbttagcompound.getBoolean("Adult");
+        b = nbttagcompound.getFloat("Age");
+        counterEntity = nbttagcompound.getInteger("CounterEntity");
+    }
+
+    protected void func_21066_o()
+    {
+        int i = rand.nextInt(100);
+        if(i < 90)
+        {
+            int j = rand.nextInt(3) + 1;
+            for(int l = 0; l < j; l++)
+            {
+                entityDropItem(new ItemStack(1, 1, 0), 0.0F);
+            }
+
+        } else
+        if(worldObj.difficultySetting > 0 && b > 1.5F)
+        {
+            int k = rand.nextInt(3) + 1;
+            for(int i1 = 0; i1 < k; i1++)
+            {
+                entityDropItem(new ItemStack(mod_mocreatures.sharkegg, 1, 0), 0.0F);
+            }
+
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+	public void destroyDrops(Entity entity, double d)
+    {
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(entity, entity.boundingBox.expand(d, d, d));
+        for(int i = 0; i < list.size(); i++)
+        {
+            Entity entity1 = (Entity)list.get(i);
+            if(!(entity1 instanceof EntityItem))
+            {
+                continue;
+            }
+            EntityItem entityitem = (EntityItem)entity1;
+            if(entityitem != null && entityitem.age < 50 && mod_mocreatures.destroyitems.get())
+            {
+                entityitem.setEntityDead();
+            }
+        }
+
+    }
+
+    public void setEntityDead()
+    {
+        if(tamed && health > 0)
+        {
+            return;
+        } else
+        {
+            counterEntity--;
+            super.setEntityDead();
+            return;
+        }
+    }
+
+    public boolean getCanSpawnHere()
+    {
+        if(worldObj.difficultySetting >= mod_mocreatures.sharkSpawnDifficulty.get() + 1 && super.getCanSpawnHere())
+        {
+            if(counterEntity >= mod_mocreatures.maxSharkS.get())
+            {
+                return false;
+            } else
+            {
+                counterEntity++;
+                return true;
+            }
+        } else
+        {
+            return false;
+        }
+    }
+
+    public float b;
+    public boolean adult;
+    public boolean tamed;
+    public static int counterEntity;
+}

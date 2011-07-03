@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="sources"/>
+	<classpathentry kind="lib" path="D:/Minecraft/Workspaces/modLoader/release/output/jinput.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/Minecraft/Workspaces/modLoader/release/output/natives"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Minecraft/Workspaces/modLoader/release/output/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/Minecraft/Workspaces/modLoader/release/output/natives"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Minecraft/Workspaces/modLoader/release/output/lwjgl_util.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/Minecraft/Workspaces/modLoader/release/output/natives"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Minecraft/Workspaces/modLoader/release/output/minecraft.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="output"/>
+</classpath>

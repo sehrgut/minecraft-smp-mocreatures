@@ -1,0 +1,906 @@
+package net.minecraft.src;
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode 
+
+import java.util.List;
+import java.util.Random;
+
+public class EntityHorse extends EntityAnimals
+{
+
+    public EntityHorse(World world)
+    {
+        super(world);
+        horseboolean = false;
+        setSize(1.4F, 1.6F);
+        health = 20;
+        rideable = false;
+        isjumping = false;
+        tamed = false;
+        texture = "/mob/horseb.png";
+        typeint = 0;
+        HorseSpeed = 0.80000000000000004D;
+        HorseJump = 0.40000000000000002D;
+        temper = 100;
+        typechosen = false;
+        fwingb = 0.0F;
+        fwingc = 0.0F;
+        fwingh = 1.0F;
+        localstack = new ItemStack[27];
+        maxhealth = 20;
+        hasreproduced = false;
+        gestationtime = 0;
+        eatenpumpkin = false;
+        bred = false;
+        nightmareInt = 0;
+        isImmuneToFire = false;
+        adult = true;
+        b = 0.35F;
+    }
+
+    public void setEntityDead()
+    {
+        if((tamed || bred) && health > 0)
+        {
+            return;
+        } else
+        {
+            counterEntity--;
+            super.setEntityDead();
+            return;
+        }
+    }
+
+    public void setType(int i)
+    {
+        typeint = i;
+        typechosen = false;
+        chooseType();
+    }
+
+    public void chooseType()
+    {
+        int i = mod_mocreatures.pegasusChanceS.get();
+        if(typeint == 0)
+        {
+            if(rand.nextInt(5) == 0)
+            {
+                adult = false;
+            }
+            int j = rand.nextInt(100);
+            if(j <= 51 - i)
+            {
+                typeint = 1;
+            } else
+            if(j <= 86 - i)
+            {
+                typeint = 2;
+            } else
+            if(j <= 95 - i)
+            {
+                typeint = 3;
+            } else
+            if(j <= 99 - i)
+            {
+                typeint = 4;
+            } else
+            {
+                typeint = 5;
+            }
+        }
+        if(!typechosen)
+        {
+            if(typeint == 1)
+            {
+                HorseSpeed = 0.90000000000000002D;
+                texture = "/mob/horseb.png";
+                maxhealth = 25;
+            } else
+            if(typeint == 2)
+            {
+                HorseSpeed = 1.0D;
+                temper = 200;
+                HorseJump = 0.5D;
+                texture = "/mob/horsebrownb.png";
+                maxhealth = 30;
+            } else
+            if(typeint == 3)
+            {
+                HorseSpeed = 1.1000000000000001D;
+                temper = 300;
+                HorseJump = 0.59999999999999998D;
+                texture = "/mob/horseblackb.png";
+                maxhealth = 35;
+            } else
+            if(typeint == 4)
+            {
+                HorseSpeed = 1.3D;
+                HorseJump = 0.59999999999999998D;
+                temper = 400;
+                texture = "/mob/horsegoldb.png";
+                maxhealth = 40;
+            } else
+            if(typeint == 5)
+            {
+                HorseSpeed = 1.2D;
+                temper = 500;
+                texture = "/mob/horsewhiteb.png";
+                maxhealth = 40;
+            } else
+            if(typeint == 6)
+            {
+                HorseSpeed = 0.90000000000000002D;
+                temper = 600;
+                texture = "/mob/horsepackb.png";
+                maxhealth = 40;
+            } else
+            if(typeint == 7)
+            {
+                HorseSpeed = 1.3D;
+                temper = 700;
+                HorseJump = 0.59999999999999998D;
+                texture = "/mob/horsenightb.png";
+                maxhealth = 50;
+                isImmuneToFire = true;
+            } else
+            if(typeint == 8)
+            {
+                HorseSpeed = 1.3D;
+                temper = 800;
+                texture = "/mob/horsebpb.png";
+                maxhealth = 50;
+                isImmuneToFire = true;
+            }
+        }
+        typechosen = true;
+    }
+
+    public void onLivingUpdate()
+    {
+        if(rand.nextInt(300) == 0 && health <= maxhealth && deathTime < 0)
+        {
+            health += 5;
+        }
+        fwinge = fwingb;
+        fwingd = fwingc;
+        fwingc = (float)((double)fwingc + (double)(onGround ? -1 : 4) * 0.29999999999999999D);
+        if(fwingc < 0.0F)
+        {
+            fwingc = 0.0F;
+        }
+        if(fwingc > 1.0F)
+        {
+            fwingc = 1.0F;
+        }
+        if(!onGround && fwingh < 1.0F)
+        {
+            fwingh = 0.3F;
+        }
+        fwingh = (float)((double)fwingh * 0.90000000000000002D);
+        if(!onGround && motionY < 0.0D && (typeint == 5 || typeint == 8))
+        {
+            motionY *= 0.59999999999999998D;
+        }
+        fwingb += fwingh * 2.0F;
+        super.onLivingUpdate();
+        if(typeint == 7 && riddenByEntity != null && nightmareInt > 0 && rand.nextInt(2) == 0)
+        {
+            NightmareEffect();
+        }
+        if(!adult && rand.nextInt(200) == 0)
+        {
+            b += 0.01F;
+            if(b >= 1.0F)
+            {
+                adult = true;
+            }
+        }
+        if(!ReadyforParenting(this))
+        {
+            return;
+        }
+        int i = 0;
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(8D, 3D, 8D));
+        for(int j = 0; j < list.size(); j++)
+        {
+            Entity entity = (Entity)list.get(j);
+            if(entity instanceof EntityHorse)
+            {
+                i++;
+            }
+        }
+
+        if(i > 1)
+        {
+            return;
+        }
+        List list1 = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(4D, 2D, 4D));
+        for(int k = 0; k < list.size(); k++)
+        {
+            Entity entity1 = (Entity)list1.get(k);
+            if(!(entity1 instanceof EntityHorse) || entity1 == this)
+            {
+                continue;
+            }
+            EntityHorse entityhorse = (EntityHorse)entity1;
+            if(!ReadyforParenting(this) || !ReadyforParenting(entityhorse))
+            {
+                continue;
+            }
+            if(rand.nextInt(100) == 0)
+            {
+                gestationtime++;
+            }
+            if(gestationtime <= 50)
+            {
+                continue;
+            }
+            EntityHorse entityhorse1 = new EntityHorse(worldObj);
+            entityhorse1.setPosition(posX, posY, posZ);
+            worldObj.entityJoinedWorld(entityhorse1);
+            worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+            if(!mod_mocreatures.easybreeding.get())
+            {
+                hasreproduced = true;
+            }
+            eatenpumpkin = false;
+            entityhorse.eatenpumpkin = false;
+            gestationtime = 0;
+            entityhorse.gestationtime = 0;
+            int l = HorseGenetics(this, entityhorse);
+            entityhorse1.bred = true;
+            entityhorse1.adult = false;
+            entityhorse1.setType(l);
+            break;
+        }
+
+    }
+
+    protected void updatePlayerActionState()
+    {
+        if(!field_9343_G && riddenByEntity == null && !eatinghaystack)
+        {
+            super.updatePlayerActionState();
+        }
+    }
+
+    private void NightmareEffect()
+    {
+        int i = MathHelper.floor_double(posX);
+        int j = MathHelper.floor_double(boundingBox.minY);
+        int k = MathHelper.floor_double(posZ);
+        worldObj.setBlockWithNotify(i - 1, j, k - 1, Block.fire.blockID);
+        nightmareInt--;
+    }
+
+    public boolean ReadyforParenting(EntityHorse entityhorse)
+    {
+        return entityhorse.riddenByEntity == null && entityhorse.ridingEntity == null && entityhorse.tamed && entityhorse.eatenpumpkin && !entityhorse.hasreproduced && entityhorse.adult;
+    }
+
+    private int HorseGenetics(EntityHorse entityhorse, EntityHorse entityhorse1)
+    {
+        int i = entityhorse.typeint + entityhorse1.typeint;
+        boolean flag = mod_mocreatures.easybreeding.get();
+        boolean flag1 = rand.nextInt(3) == 0;
+        if(i == 7 && (flag || flag1))
+        {
+            return 6;
+        }
+        if(i == 9 && (flag || flag1))
+        {
+            return 7;
+        }
+        if(i == 10 && (flag || flag1))
+        {
+            return 5;
+        }
+        return i != 12 || entityhorse.typeint == 6 || !flag && !flag1 ? 0 : 8;
+    }
+
+    public boolean attackEntityFrom(Entity entity, int i)
+    {
+        if(riddenByEntity != null && entity == riddenByEntity)
+        {
+            return false;
+        } else
+        {
+            return super.attackEntityFrom(entity, i);
+        }
+    }
+
+    public void moveEntityWithHeading(float f, float f1)
+    {
+        if(handleWaterMovement())
+        {
+            if(riddenByEntity != null)
+            {
+                motionX += riddenByEntity.motionX * (HorseSpeed / 2D);
+                motionZ += riddenByEntity.motionZ * (HorseSpeed / 2D);
+                EntityPlayer entityplayer = (EntityPlayer)riddenByEntity;
+                if(entityplayer.isJumping && !isjumping)
+                {
+                    motionY += 0.5D;
+                    isjumping = true;
+                }
+                moveEntity(motionX, motionY, motionZ);
+                if(onGround)
+                {
+                    isjumping = false;
+                }
+                rotationPitch = riddenByEntity.rotationPitch * 0.5F;
+                if(rand.nextInt(20) == 0)
+                {
+                    rotationYaw = riddenByEntity.rotationYaw;
+                }
+                setRotation(rotationYaw, rotationPitch);
+                if(!tamed)
+                {
+                    riddenByEntity = null;
+                }
+            }
+            double d = posY;
+            moveFlying(f, f1, 0.02F);
+            moveEntity(motionX, motionY, motionZ);
+            motionX *= 0.80000001192092896D;
+            motionY *= 0.80000001192092896D;
+            motionZ *= 0.80000001192092896D;
+            motionY -= 0.02D;
+            if(isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d, motionZ))
+            {
+                motionY = 0.30000001192092901D;
+            }
+        } else
+        if(handleLavaMovement())
+        {
+            if(riddenByEntity != null)
+            {
+                motionX += riddenByEntity.motionX * (HorseSpeed / 2D);
+                motionZ += riddenByEntity.motionZ * (HorseSpeed / 2D);
+                EntityPlayer entityplayer1 = (EntityPlayer)riddenByEntity;
+                if(entityplayer1.isJumping && !isjumping)
+                {
+                    motionY += 0.5D;
+                    isjumping = true;
+                }
+                moveEntity(motionX, motionY, motionZ);
+                if(onGround)
+                {
+                    isjumping = false;
+                }
+                rotationPitch = riddenByEntity.rotationPitch * 0.5F;
+                if(rand.nextInt(20) == 0)
+                {
+                    rotationYaw = riddenByEntity.rotationYaw;
+                }
+                setRotation(rotationYaw, rotationPitch);
+                if(!tamed)
+                {
+                    riddenByEntity = null;
+                }
+            }
+            double d1 = posY;
+            moveFlying(f, f1, 0.02F);
+            moveEntity(motionX, motionY, motionZ);
+            motionX *= 0.5D;
+            motionY *= 0.5D;
+            motionZ *= 0.5D;
+            motionY -= 0.02D;
+            if(isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d1, motionZ))
+            {
+                motionY = 0.30000001192092901D;
+            }
+        } else
+        {
+            float f2 = 0.91F;
+            if(onGround)
+            {
+                f2 = 0.5460001F;
+                int i = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(boundingBox.minY) - 1, MathHelper.floor_double(posZ));
+                if(i > 0)
+                {
+                    f2 = Block.blocksList[i].slipperiness * 0.91F;
+                }
+            }
+            float f3 = 0.162771F / (f2 * f2 * f2);
+            moveFlying(f, f1, onGround ? 0.1F * f3 : 0.02F);
+            f2 = 0.91F;
+            if(onGround)
+            {
+                f2 = 0.5460001F;
+                int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(boundingBox.minY) - 1, MathHelper.floor_double(posZ));
+                if(j > 0)
+                {
+                    f2 = Block.blocksList[j].slipperiness * 0.91F;
+                }
+            }
+            if(isOnLadder())
+            {
+                fallDistance = 0.0F;
+                if(motionY < -0.14999999999999999D)
+                {
+                    motionY = -0.14999999999999999D;
+                }
+            }
+            if(riddenByEntity != null && !tamed)
+            {
+                if(rand.nextInt(5) == 0 && !isjumping)
+                {
+                    motionY += 0.40000000000000002D;
+                    isjumping = true;
+                }
+                if(rand.nextInt(10) == 0)
+                {
+                    motionX += rand.nextDouble() / 30D;
+                    motionZ += rand.nextDouble() / 10D;
+                }
+                moveEntity(motionX, motionY, motionZ);
+                if(rand.nextInt(50) == 0)
+                {
+                    worldObj.playSoundAtEntity(this, "horsemad", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                    riddenByEntity.motionY += 0.90000000000000002D;
+                    riddenByEntity.motionZ -= 0.29999999999999999D;
+                    riddenByEntity = null;
+                }
+                if(onGround)
+                {
+                    isjumping = false;
+                }
+                if(rand.nextInt(temper * 8) == 0)
+                {
+                    tamed = true;
+                }
+            }
+            if(riddenByEntity != null && tamed)
+            {
+                boundingBox.maxY = riddenByEntity.boundingBox.maxY;
+                motionX += riddenByEntity.motionX * HorseSpeed;
+                motionZ += riddenByEntity.motionZ * HorseSpeed;
+                EntityPlayer entityplayer2 = (EntityPlayer)riddenByEntity;
+                if(entityplayer2.isJumping && !isjumping)
+                {
+                    motionY += HorseJump;
+                    isjumping = true;
+                }
+                if(entityplayer2.isJumping && (typeint == 5 || typeint == 8))
+                {
+                    motionY += 0.10000000000000001D;
+                }
+                moveEntity(motionX, motionY, motionZ);
+                if(onGround)
+                {
+                    isjumping = false;
+                }
+                rotationPitch = riddenByEntity.rotationPitch * 0.5F;
+                float f4 = 0.0F;
+                if(rotationYaw > riddenByEntity.rotationYaw)
+                {
+                    float f5 = rotationYaw - riddenByEntity.rotationYaw;
+                    if(f5 > 25F)
+                    {
+                        rotationYaw -= f5 / 10F;
+                    }
+                } else
+                {
+                    float f6 = riddenByEntity.rotationYaw - rotationYaw;
+                    if(f6 > 25F)
+                    {
+                        rotationYaw += f6 / 10F;
+                    }
+                }
+                setRotation(rotationYaw, rotationPitch);
+            }
+            moveEntity(motionX, motionY, motionZ);
+            if(isCollidedHorizontally && isOnLadder())
+            {
+                motionY = 0.20000000000000001D;
+            }
+            if((typeint == 5 || typeint == 8) && riddenByEntity != null && tamed)
+            {
+                motionY -= 0.080000000000000002D;
+                motionY *= 0.60000000000000009D;
+            } else
+            {
+                motionY -= 0.080000000000000002D;
+                motionY *= 0.98000001907348633D;
+            }
+            motionX *= f2;
+            motionZ *= f2;
+        }
+        field_705_Q = field_704_R;
+        double d2 = posX - prevPosX;
+        double d3 = posZ - prevPosZ;
+        float f7 = MathHelper.sqrt_double(d2 * d2 + d3 * d3) * 4F;
+        if(f7 > 1.0F)
+        {
+            f7 = 1.0F;
+        }
+        field_704_R += (f7 - field_704_R) * 0.4F;
+        field_703_S += field_704_R;
+    }
+
+    protected void fall(float f)
+    {
+        int i = (int)Math.ceil(f - 3F);
+        if(i > 0 && typeint != 5 && typeint != 8)
+        {
+            if(typeint >= 3)
+            {
+                i /= 3;
+            }
+            if(i > 0)
+            {
+                attackEntityFrom(this, i);
+            }
+            if(riddenByEntity != null && i > 0)
+            {
+                riddenByEntity.attackEntityFrom(this, i);
+            }
+            if(typeint == 5 || typeint == 8)
+            {
+                return;
+            }
+            int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 0.20000000298023221D - (double)prevRotationPitch), MathHelper.floor_double(posZ));
+            if(j > 0)
+            {
+                StepSound stepsound = Block.blocksList[j].stepSound;
+                worldObj.playSoundAtEntity(this, stepsound.func_1145_d(), stepsound.func_1147_b() * 0.5F, stepsound.func_1144_c() * 0.75F);
+            }
+        }
+    }
+
+    protected float getSoundVolume()
+    {
+        return 0.4F;
+    }
+
+    public boolean interact(EntityPlayer entityplayer)
+    {
+        ItemStack itemstack = entityplayer.inventory.getCurrentItem();
+        if(itemstack != null && itemstack.itemID == Item.wheat.shiftedIndex)
+        {
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            if((temper -= 25) < 25)
+            {
+                temper = 25;
+            }
+            if((health += 5) > maxhealth)
+            {
+                health = maxhealth;
+            }
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            if(!adult)
+            {
+                b += 0.01F;
+            }
+            return true;
+        }
+        if(itemstack != null && itemstack.itemID == mod_mocreatures.sugarlump.shiftedIndex)
+        {
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            if((temper -= 50) < 25)
+            {
+                temper = 25;
+            }
+            if((health += 10) > maxhealth)
+            {
+                health = maxhealth;
+            }
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            if(!adult)
+            {
+                b += 0.02F;
+            }
+            return true;
+        }
+        if(itemstack != null && itemstack.itemID == Item.bread.shiftedIndex)
+        {
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            if((temper -= 100) < 25)
+            {
+                temper = 25;
+            }
+            if((health += 20) > maxhealth)
+            {
+                health = maxhealth;
+            }
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            if(!adult)
+            {
+                b += 0.03F;
+            }
+            return true;
+        }
+        if(itemstack != null && itemstack.itemID == Item.appleRed.shiftedIndex)
+        {
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            tamed = true;
+            health = maxhealth;
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            if(!adult)
+            {
+                b += 0.05F;
+            }
+            return true;
+        }
+        if(itemstack != null && tamed && itemstack.itemID == Block.crate.blockID && (typeint == 6 || typeint == 8))
+        {
+            if(chestedhorse)
+            {
+                return false;
+            }
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            chestedhorse = true;
+            worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+            return true;
+        }
+        if(itemstack != null && tamed && itemstack.itemID == mod_mocreatures.haystack.shiftedIndex)
+        {
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            eatinghaystack = true;
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            health = maxhealth;
+            return true;
+        }
+        if(itemstack != null && (itemstack.itemID == Item.shovelStone.shiftedIndex || itemstack.itemID == Block.torchWood.blockID) && chestedhorse)
+        {
+            localhorsechest = new AnimalChest(localstack, "HorseChest");
+            entityplayer.displayGUIChest(localhorsechest);
+            return true;
+        }
+        if(itemstack != null && (itemstack.itemID == Block.pumpkin.blockID || itemstack.itemID == Item.bowlSoup.shiftedIndex))
+        {
+            if(hasreproduced || !adult)
+            {
+                return false;
+            }
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            eatenpumpkin = true;
+            health = maxhealth;
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            return true;
+        }
+        if(itemstack != null && tamed && itemstack.itemID == Item.redstone.shiftedIndex && typeint == 7)
+        {
+            if(nightmareInt > 500)
+            {
+                return false;
+            }
+            if(--itemstack.stackSize == 0)
+            {
+                entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
+            }
+            nightmareInt = 500;
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+            return true;
+        }
+        if(rideable && adult)
+        {
+            rotationYaw = entityplayer.rotationYaw;
+            rotationPitch = entityplayer.rotationPitch;
+            eatinghaystack = false;
+            entityplayer.mountEntity(this);
+            gestationtime = 0;
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    public void onDeath(Entity entity)
+    {
+        if(scoreValue > 0 && entity != null)
+        {
+            entity.addToPlayerScore(this, scoreValue);
+        }
+        unused_flag = true;
+        if(!worldObj.multiplayerWorld)
+        {
+        	dropFewItems();
+        }
+        worldObj.func_4079_a(this, 3F);
+        if(chestedhorse && (typeint == 6 || typeint == 8))
+        {
+            int i = MathHelper.floor_double(posX);
+            int j = MathHelper.floor_double(boundingBox.minY);
+            int k = MathHelper.floor_double(posZ);
+            HorseRemoval(worldObj, i, j, k);
+        }
+    }
+
+    public void HorseRemoval(World world, int i, int j, int k)
+    {
+        if(localstack == null)
+        {
+            return;
+        }
+        localhorsechest = new AnimalChest(localstack, "HorseChest");
+label0:
+        for(int l = 0; l < localhorsechest.getSizeInventory(); l++)
+        {
+            ItemStack itemstack = localhorsechest.getStackInSlot(l);
+            if(itemstack == null)
+            {
+                continue;
+            }
+            float f = rand.nextFloat() * 0.8F + 0.1F;
+            float f1 = rand.nextFloat() * 0.8F + 0.1F;
+            float f2 = rand.nextFloat() * 0.8F + 0.1F;
+            do
+            {
+                if(itemstack.stackSize <= 0)
+                {
+                    continue label0;
+                }
+                int i1 = rand.nextInt(21) + 10;
+                if(i1 > itemstack.stackSize)
+                {
+                    i1 = itemstack.stackSize;
+                }
+                itemstack.stackSize -= i1;
+                EntityItem entityitem = new EntityItem(worldObj, (float)i + f, (float)j + f1, (float)k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
+                float f3 = 0.05F;
+                entityitem.motionX = (float)rand.nextGaussian() * f3;
+                entityitem.motionY = (float)rand.nextGaussian() * f3 + 0.2F;
+                entityitem.motionZ = (float)rand.nextGaussian() * f3;
+                worldObj.entityJoinedWorld(entityitem);
+            } while(true);
+        }
+
+    }
+
+    public void writeEntityToNBT(NBTTagCompound nbttagcompound)
+    {
+        super.writeEntityToNBT(nbttagcompound);
+        nbttagcompound.setBoolean("Saddle", rideable);
+        nbttagcompound.setBoolean("Tamed", tamed);
+        nbttagcompound.setBoolean("HorseBoolean", horseboolean);
+        nbttagcompound.setInteger("TypeInt", typeint);
+        nbttagcompound.setBoolean("ChestedHorse", chestedhorse);
+        nbttagcompound.setBoolean("HasReproduced", hasreproduced);
+        nbttagcompound.setBoolean("Bred", bred);
+        nbttagcompound.setBoolean("Adult", adult);
+        nbttagcompound.setFloat("Age", b);
+        nbttagcompound.setInteger("CounterEntity", counterEntity);
+        if(typeint == 6 || typeint == 8)
+        {
+            NBTTagList nbttaglist = new NBTTagList();
+            for(int i = 0; i < localstack.length; i++)
+            {
+                if(localstack[i] != null)
+                {
+                    NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                    nbttagcompound1.setByte("Slot", (byte)i);
+                    localstack[i].writeToNBT(nbttagcompound1);
+                    nbttaglist.setTag(nbttagcompound1);
+                }
+            }
+
+            nbttagcompound.setTag("Items", nbttaglist);
+        }
+    }
+
+    public void readEntityFromNBT(NBTTagCompound nbttagcompound)
+    {
+        super.readEntityFromNBT(nbttagcompound);
+        rideable = nbttagcompound.getBoolean("Saddle");
+        tamed = nbttagcompound.getBoolean("Tamed");
+        bred = nbttagcompound.getBoolean("Bred");
+        adult = nbttagcompound.getBoolean("Adult");
+        horseboolean = nbttagcompound.getBoolean("HorseBoolean");
+        chestedhorse = nbttagcompound.getBoolean("ChestedHorse");
+        hasreproduced = nbttagcompound.getBoolean("HasReproduced");
+        typeint = nbttagcompound.getInteger("TypeInt");
+        b = nbttagcompound.getFloat("Age");
+        counterEntity = nbttagcompound.getInteger("CounterEntity");
+        if(typeint == 6 || typeint == 8)
+        {
+            NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
+            localstack = new ItemStack[27];
+            for(int i = 0; i < nbttaglist.tagCount(); i++)
+            {
+                NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+                int j = nbttagcompound1.getByte("Slot") & 0xff;
+                if(j >= 0 && j < localstack.length)
+                {
+                    localstack[j] = new ItemStack(nbttagcompound1);
+                }
+            }
+
+        }
+    }
+
+    protected String getLivingSound()
+    {
+        return "horsegrunt";
+    }
+
+    protected String getHurtSound()
+    {
+        return "horsehurt";
+    }
+
+    protected String getDeathSound()
+    {
+        return "horsedying";
+    }
+
+    protected int getDropItemId()
+    {
+        return Item.leather.shiftedIndex;
+    }
+
+    public int getMaxSpawnedInChunk()
+    {
+        return 6;
+    }
+
+    public boolean getCanSpawnHere()
+    {
+        if(super.getCanSpawnHere())
+        {
+            if(counterEntity >= mod_mocreatures.maxHorseS.get())
+            {
+                return false;
+            } else
+            {
+                counterEntity++;
+                return true;
+            }
+        } else
+        {
+            return false;
+        }
+    }
+
+    private int nightmareInt;
+    private boolean bred;
+    public boolean eatenpumpkin;
+    private int gestationtime;
+    public boolean hasreproduced;
+    private int maxhealth;
+    private int temper;
+    private double HorseSpeed;
+    private double HorseJump;
+    public int typeint;
+    public boolean typechosen;
+    public boolean tamed;
+    public boolean horseboolean;
+    public boolean rideable;
+    public boolean isjumping;
+    public float fwingb;
+    public float fwingc;
+    public float fwingd;
+    public float fwinge;
+    public float fwingh;
+    public boolean chestedhorse;
+    private IInventory localhorsechest;
+    public ItemStack localstack[];
+    private boolean eatinghaystack;
+    public float b;
+    public boolean adult;
+    public static int counterEntity;
+}

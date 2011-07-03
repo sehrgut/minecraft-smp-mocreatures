@@ -1,0 +1,15 @@
+INDEX VERSION 1.126+D:\Minecraft\Workspaces\moCreatures\client\.metadata\.plugins\org.eclipse.jdt.core
+3660049452.index
+3771971767.index
+3375437009.index
+951224757.index
+331070015.index
+3080956457.index
+2064353828.index
+1549352977.index
+1203545312.index
+492574064.index
+2772208869.index
+3787580441.index
+1611258261.index
+4050055891.index
